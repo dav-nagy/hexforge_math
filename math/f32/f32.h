@@ -26,9 +26,4 @@ union ieee754_f32 {
     explicit constexpr ieee754_f32(const unsigned int _i) : _i(_i) {};
 };
 
-float inff();
-float inff(bool _n); // We don't need to make this consistent with f32.cpp using const because the compiler doesn't care
-
-float nanf(const char* _info = "");
-
 #endif //F32_H

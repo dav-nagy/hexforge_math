@@ -7,7 +7,7 @@
 
 #define MAX_QUIET_NAN_INFO 0x3FFFFF // 22 bits (out of 23 - MSB = quiet NaN flag)
 
-int parse_nan_char(const char* _str) {
+int hexforge_nan_char::parse_nan_char(const char* _str) {
     int _r = 0;
     const int _sgn = (_str[0] == '-')? -1 : 1, _start = (_str[0] == '-')? 1 : 0;
     for (int _i = _start; _str[_i] != '\0'; _i++) {

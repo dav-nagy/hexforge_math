@@ -12,18 +12,20 @@
  */
 
 //IEEE754 32-bit Floating Point form
-union ieee754_f32 {
-    float _f;
-    unsigned int _i;
-    struct {
-        unsigned int _mantissa : 23;
-        unsigned int _exp       : 8;
-        unsigned int _sgn       : 1;
-    } _f_core;
+namespace hexforge_f32 {
+    union ieee754_f32 {
+        float _f;
+        unsigned int _i;
+        struct {
+            unsigned int _mantissa : 23;
+            unsigned int _exp       : 8;
+            unsigned int _sgn       : 1;
+        } _f_core;
 
-    explicit constexpr ieee754_f32(const float _f) : _f(_f) {};
-    explicit constexpr ieee754_f32(const int _i) : _i(_i) {};
-    explicit constexpr ieee754_f32(const unsigned int _i) : _i(_i) {};
-};
+        explicit constexpr ieee754_f32(const float _f) : _f(_f) {};
+        explicit constexpr ieee754_f32(const int _i) : _i(_i) {};
+        explicit constexpr ieee754_f32(const unsigned int _i) : _i(_i) {};
+    };
+}
 
 #endif //F32_H

@@ -1,0 +1,13 @@
+//
+// Created by David on 6/1/2025.
+//
+
+#ifndef STR_WRITE_H
+#define STR_WRITE_H
+
+#include "../../../string/string.h"
+
+
+void rc_write(const float*);
+
+#endif //STR_WRITE_H

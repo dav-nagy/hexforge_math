@@ -8,12 +8,18 @@
 #include "f32.h"
 #include "../char/nan_helper.h"
 
-float inff();
-float inff(bool _n); // We don't need to make this consistent with f32.cpp using const because the compiler doesn't care
+namespace hexforge_f32_functions {
+    float inff();
+    float inff(bool);
 
-float nanf(const char* _msg, bool _quiet);
+    float is_inff(float);
+    float is_ninff(float);
 
-bool is_qnanf(float _f);
-bool is_snanf(float _f);
+    float nanf(const char*, bool);
+
+    bool is_qnanf(float);
+    bool is_snanf(float);
+    bool is_nanf(float);
+}
 
 #endif //F32_FUNCTIONS_H

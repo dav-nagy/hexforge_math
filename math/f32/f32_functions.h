@@ -3,6 +3,7 @@
 //
 
 #ifndef F32_FUNCTIONS_H
+//Include guard
 #define F32_FUNCTIONS_H
 
 #include "f32.h"
@@ -12,8 +13,9 @@ namespace hexforge_f32_functions {
     float inff();
     float inff(bool);
 
-    float is_inff(float);
+    float is_pinff(float);
     float is_ninff(float);
+    float is_inff(float);
 
     float nanf(const char*, bool);
 

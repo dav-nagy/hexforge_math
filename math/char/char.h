@@ -3,6 +3,7 @@
 //
 
 #ifndef CHAR_H
+//Include guard
 #define CHAR_H
 
 #endif //CHAR_H

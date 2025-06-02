@@ -3,6 +3,7 @@
 //
 
 #ifndef TRAILING_ZEROS_H
+//Include guard
 #define TRAILING_ZEROS_H
 
 namespace hexforge_trailing_zeros {

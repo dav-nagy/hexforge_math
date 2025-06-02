@@ -3,6 +3,7 @@
 //
 
 #ifndef CIO_OUT_OPS_H
+//Include guard
 #define CIO_OUT_OPS_H
 
 #include "../../../string/string.h"

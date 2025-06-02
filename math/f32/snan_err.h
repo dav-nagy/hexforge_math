@@ -3,10 +3,14 @@
 //
 
 #ifndef SNAN_ERR_H
+//Include guard
 #define SNAN_ERR_H
 #include "f32_functions.h"
 
 namespace hexforge_snan_err {
+    //Detect if a given 32-bit float _f is a Signaling NaN
+    //If so, throw an exception
+    //This function is designed to be implemented in a try{...}catch(...){...} environment
     inline void throw_snan(const float _f) {
         if (hexforge_f32_functions::is_snanf) throw "Signaling NaN detected";
     }

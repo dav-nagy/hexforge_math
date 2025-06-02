@@ -3,6 +3,7 @@
 //
 
 #ifndef STR_WRITE_H
+//Include guard
 #define STR_WRITE_H
 
 #include "../../../string/string.h"

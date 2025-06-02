@@ -3,6 +3,7 @@
 //
 
 #ifndef IO_H
+//Include guard
 #define IO_H
 
 //Currently for testing / this will not stay

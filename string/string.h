@@ -3,6 +3,7 @@
 //
 
 #ifndef STRING_H
+//Include guard
 #define STRING_H
 
 namespace hexforge_string {

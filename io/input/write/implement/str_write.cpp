@@ -21,6 +21,7 @@ extern "C" { // Tells the compiler to treat this as C code instead of C++ To avo
                      */
 }
 
+//STD_OUTPUT_HANDLE value as seen in <windows.h>
 #define STD_OUTPUT_HANDLE ((unsigned int) - 11)
 /* What???
  * stdin = -10
@@ -30,14 +31,6 @@ extern "C" { // Tells the compiler to treat this as C code instead of C++ To avo
 
 //Internal function for writing to the console - Use cio_write or io::cio_out << instead
 static void rc_write(const char* _msg) {
-    void* _output_handler = GetStdHandle(STD_OUTPUT_HANDLE);
-    unsigned long _str_len = 0, _written;
-    while (_msg[_str_len] != '\0')
-        _str_len++;
-    WriteConsoleA(_output_handler, _msg, _str_len, &_written, nullptr);
-}
-
-void rc_write(const float* _msg) {
     void* _output_handler = GetStdHandle(STD_OUTPUT_HANDLE);
     unsigned long _str_len = 0, _written;
     while (_msg[_str_len] != '\0')

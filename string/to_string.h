@@ -3,6 +3,7 @@
 //
 
 #ifndef TO_STRING_H
+//Include guard
 #define TO_STRING_H
 
 #include "string.h"

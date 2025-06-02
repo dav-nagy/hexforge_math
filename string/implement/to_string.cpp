@@ -9,6 +9,8 @@
 
 using namespace hexforge_string;
 
+//Convert a signed 32-bit integer _i to a base-10 string
+//If any symbols save 0-9 and '-' are used, the function returs '0'
 string hexforge_to_string::to_string(const int& _i) {
     unsigned int _ai = (_i < 0) ? -_i : _i;
     const bool _is_n = (_ai != _i);

@@ -5,6 +5,8 @@
 #include "../trunc.h"
 #include "../f32.h"
 
+//Return the smallest integral value smaller than a 32-bit floating point number _f
+//By smaller, I mean closer to zero (e.g. truncf(-3.75f) = -3, not -4)
 float hexforge_trunc::truncf(float _f) {
     hexforge_f32::ieee754_f32 _fx(_f);
     unsigned int _sgn = _fx._f_core._sgn;

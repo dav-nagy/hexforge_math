@@ -6,9 +6,13 @@
 
 using namespace hexforge_string;
 
+//Obtain the data of a string (i.e. the char* containing the characters)
 [[nodiscard]] const char* string::data() const {return _data;};
+//Obtain the length of the string (i.e. the number of characters)
 [[nodiscard]] unsigned long string::length() const {return _length;};
 
+//Set the data of the current string (i.e. the char* contianing the characters)
+//Input a const char*
 void string::data(const char* _str) {
     unsigned long _l = 0; // Length
     while (_str[_l] != '\0')
@@ -20,11 +24,14 @@ void string::data(const char* _str) {
     _data[_length] = '\0';
 }
 
+//Construct a string of no arguments with data '\0'
 string::string() {
     _data = new char[1]{'\0'};
     _length = 1;
 };
 
+//Construct a string using a const char* argument
+//Length is determined internally
 string::string(const char* _str) {
     unsigned long _l = 0; // Length
     while (_str[_l] != '\0') ++_l;
@@ -35,6 +42,8 @@ string::string(const char* _str) {
     _data[_length] = '\0';
 }
 
+//Construct a string with another strong
+//Both the data and length are determined internally
 string::string(const string& _str) {
     _length = _str._length;
     _data = new char[_length + 1];
@@ -43,13 +52,16 @@ string::string(const string& _str) {
     _data[_length] = '\0';
 }
 
+//Construct a string with a single character
 string::string(const char _c) {
     _length = 1;
     _data = new char[2]{_c, '\0'};
 }
 
+//Destruct a string
 string::~string() { delete[] _data; }
 
+//Assign one string's values to another's
 string& string::operator=(const string& _str) {
     if (this == &_str)
         return *this;
@@ -60,10 +72,14 @@ string& string::operator=(const string& _str) {
     _data[_length] = '\0';
     return *this;
 }
+
+//Access a character of a string at a given index determined by a 32-bit unsigned integer _i
 char string::operator[] (const unsigned long _i) const {
     return _data[_i];
 }
 
+//Add the values of a given string to the current string
+//That is, concatenate the data and add the lengths
 string& string::operator+=(const string& _s) {
     char* _r = new char[_length + _s._length + 1];
     for (unsigned long _i = 0; _i < _length; ++_i)
@@ -77,6 +93,8 @@ string& string::operator+=(const string& _s) {
     return *this;
 }
 
+//Chain together the values of a given string to the current string
+//That is, concatenate the data and add the lengths
 string& string::operator<<(const string& _s){
     *this += _s;
     return *this;

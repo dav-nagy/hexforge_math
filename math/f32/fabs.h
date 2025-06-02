@@ -3,6 +3,7 @@
 //
 
 #ifndef FABS_H
+//Include guard
 #define FABS_H
 
 namespace hexforge_fabs {

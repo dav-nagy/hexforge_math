@@ -4,8 +4,11 @@
 
 #include "../trailing_zeros.h"
 
+//Return the number of trailing zeros in a binary representation of a 32-bit integer _i
+//(e.g. trailing_zeros(32 (0b100000)) = 5
+//This works with two's compliment negative numbers as well
 int hexforge_trailing_zeros::trailing_zeros(int _i) {
-    _i = ~_i & (_i - 1); //Weird bit magic from the Java STL
+    _i = ~_i & (_i - 1); //Weird bit magic from the Java STL that I don't understand
     if (_i <= 0)
         return _i & 0x20;
     int _n = 1;

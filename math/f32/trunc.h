@@ -3,6 +3,7 @@
 //
 
 #ifndef TRUNC_H
+//Include guard
 #define TRUNC_H
 
 namespace hexforge_trunc {

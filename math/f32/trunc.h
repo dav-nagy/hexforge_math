@@ -8,13 +8,12 @@
 
 extern "C"{
     float _ieee754_trunc(float);
-
-    float truncf(float);
+    float _truncf(float);
 }
 
-namespace _hf {
+namespace hf_math {
     inline float truncf(const float _f) {
-        return ::truncf(_f);
+        return ::_truncf(_f);
     }
 }
 

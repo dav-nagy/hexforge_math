@@ -6,8 +6,15 @@
 //Include guard
 #define FABS_H
 
-namespace hexforge_fabs {
-    float fabs(float);
+extern "C"{
+    float _ieee_fabsf(float);
+    float _fabsf(float);
+}
+
+namespace hf_math {
+    inline float fabsf(const float _f) {
+        return ::_fabsf(_f);
+    }
 }
 
 #endif //FABS_H

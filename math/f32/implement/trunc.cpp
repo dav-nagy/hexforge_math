@@ -62,10 +62,7 @@ extern "C" _internal_hidden // Some evil gatekeeping to keep the public API clea
     return _fx._f;
 }
 
-#ifndef _strong_alias
-    #include "../../attribute/attribute.h"
-#endif
     extern "C" { //This must go in extern "C" to avoid name mangling
         //Format it nicely for the public API
-        _strong_alias(truncf, _ieee754_truncf);
+        _strong_alias(_truncf, _ieee754_truncf);
     }

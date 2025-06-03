@@ -6,9 +6,4 @@
 //Include guard
 #define STR_WRITE_H
 
-#include "../../../string/string.h"
-
-
-void rc_write(const float*);
-
 #endif //STR_WRITE_H

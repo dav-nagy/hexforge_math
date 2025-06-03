@@ -13,9 +13,9 @@ namespace hexforge_f32_functions {
     float inff();
     float inff(bool);
 
-    float is_pinff(float);
-    float is_ninff(float);
-    float is_inff(float);
+    bool is_pinff(float);
+    bool is_ninff(float);
+    bool is_inff(float);
 
     float nanf(const char*, bool);
 

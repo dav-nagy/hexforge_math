@@ -11,7 +11,7 @@ using namespace hexforge_string;
 //Obtain the length of the string (i.e. the number of characters)
 [[nodiscard]] unsigned long string::length() const {return _length;};
 
-//Set the data of the current string (i.e. the char* contianing the characters)
+//Set the data of the current string (i.e. the char* containing the characters)
 //Input a const char*
 void string::data(const char* _str) {
     unsigned long _l = 0; // Length
@@ -22,6 +22,10 @@ void string::data(const char* _str) {
     for (unsigned long i = 0; i < _length; ++i)
         _data[i] = _str[i];
     _data[_length] = '\0';
+}
+void string::data(const char _c) {
+    _data = new char[2]{_c, '\0'};
+    _length = 1;
 }
 
 //Construct a string of no arguments with data '\0'

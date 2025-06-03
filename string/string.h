@@ -17,6 +17,7 @@ namespace hexforge_string {
         [[nodiscard]] unsigned long length() const;
 
         void data(const char* _str);
+        void data(char _c);
 
         string();
         explicit string(const char*);

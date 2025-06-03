@@ -9,7 +9,7 @@
 #include "../../../string/string.h"
 
 namespace hexforge_cio_out {
-    void cio_write(const char* _msg);
+    void cio_write(const char*);
 
     class cio_out {
     public:
@@ -17,6 +17,15 @@ namespace hexforge_cio_out {
         cio_out& operator<<(const char*);
         cio_out& operator<<(char);
         cio_out& operator<<(int);
+    };
+}
+
+namespace hexforge_cio_in {
+    void cio_read(char*, unsigned long);
+
+    class cio_in {
+    public:
+        cio_in& operator>> (const hexforge_string::string&);
     };
 }
 

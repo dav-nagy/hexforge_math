@@ -1,0 +1,51 @@
+//
+// Created by David on 6/2/2025.
+//
+
+#include "../str_read.h"
+#include "../../ops/cio_out_ops.h"
+
+//Silly little Microsoft Windows magic...
+extern "C" { // Tells the compiler to treat this as C code instead of C++ To avoid function overload
+    __declspec(dllimport) void* __stdcall GetStdHandle(unsigned long);
+    __declspec(dllimport)
+        int __stdcall ReadConsoleA(
+            void*,
+            const void*,
+            unsigned long,
+            unsigned long*,
+            void* /*Why do we need this if it is always nullptr?*/); // Yeah, I do not know why we need all of these
+    /*This appears to be declared in <windows.h>, yet no definition
+     *is found because it is an internal part of Windows
+     *
+     */
+}
+
+//STD_INPUT_HANDLE as seen in <windows.h>
+#define STD_INPUT_HANDLE ((unsigned long) - 10)
+/* What???
+ * stdin = -10
+ * stdout = -11
+ * stderr = -12
+ */
+
+static void rc_read(char* _buf, unsigned long _buf_size) {
+    void* _input_handler = GetStdHandle(STD_INPUT_HANDLE);
+    unsigned long _read = 0;
+
+    ReadConsoleA(_input_handler, _buf, _buf_size - 1, &_read, nullptr);
+    //Terminate manually because Windows does not do this for you
+    _buf[_read] = '\0';
+    //Strip possible newline character from 'Enter'
+    if (_read > 0 && _buf[_read - 1] == '\n') _buf[_read - 1] = '\0';
+}
+
+/*
+  Read the console...
+  char* _buf - Response will be written to this
+ */
+void hexforge_cio_in::cio_read(char* _buf, unsigned long _buf_size) {
+    return rc_read(_buf, _buf_size);
+}
+
+#undef STD_INPUT_HANDLE

@@ -8,11 +8,12 @@
 // #include "math/int/trailing_zeros.h"
 // #include "string/to_string.h"
 
-#include <cmath>
-
+#include "io/io.h"
+#include "io/input_output/ops/cio_out_ops.h"
 #include "math/f32/f32.h"
 #include "math/f32/fabs.h"
 #include "math/f32/trunc.h"
+
 
 int main() {
 
@@ -23,13 +24,13 @@ int main() {
     // _r << _s.data() << '\n';
 
 
-    std::cout << hf_math::fabsf(-93847.324337f);
+    std::cout << hf_math::truncf(-93847.324337f);
 
-   // char buffer[128];
-    //hexforge_cio_in::cio_read(buffer, 128);
-    //io::cio_out << buffer << '\n';
+    char buffer[128];
+    hexforge_cio_in::cio_read(buffer, 128);
+    io::cio_out << buffer << '\n';
     //↓↓↓ Spooky scary... do not interact with lest it become enraged ↓↓↓
     __asm__("");
-    /////////////////////
+    ////////////////////
     return 0;
 }

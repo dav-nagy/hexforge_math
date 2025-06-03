@@ -1,13 +1,14 @@
 //
-// Created by David on 6/2/2025.
+// Created by David on 6/1/2025.
 //
 
-#ifndef FABS_H
+#ifndef FABSF_H
 //Include guard
-#define FABS_H
+#define FABSF_H
 
 extern "C"{
-    float _ieee_fabsf(float);
+    float _ieee754_fabsf(float);
+
     float _fabsf(float);
 }
 
@@ -17,4 +18,4 @@ namespace hf_math {
     }
 }
 
-#endif //FABS_H
+#endif //FABSF_H

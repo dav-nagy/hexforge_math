@@ -21,6 +21,8 @@
 #else //For Windows
     #define _internal_hidden \
         __declspec(dllexport)
+//^^^Might be useless...
+
     #define _export \
         __attribute((__visibility__("default")))
 #endif

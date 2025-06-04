@@ -7,7 +7,7 @@
 #define F32_FUNCTIONS_H
 
 #include "f32.h"
-#include "../char/nan_helper.h"
+#include "../../char/nan_helper.h"
 
 namespace hexforge_f32_functions {
     float inff();

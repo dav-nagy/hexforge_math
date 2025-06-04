@@ -1,18 +1,12 @@
 #include <iostream>
 #include <iomanip>
-//
-// #include "io/io.h"
-// #include "math/f32/f32_functions.h"
-// #include "math/f32/fabs.h"
-// #include "math/f32/trunc.h"
-// #include "math/int/trailing_zeros.h"
-// #include "string/to_string.h"
 
-#include "io/io.h"
-#include "io/input_output/ops/cio_out_ops.h"
-#include "math/f32/f32.h"
-#include "math/f32/fabs.h"
-#include "math/f32/trunc.h"
+#define SKIP_WARN
+#undef SKIP_WARN
+
+//#include "math/implement/f32/internal/fabsf.h"
+
+#include "math/c_math.h"
 
 
 int main() {
@@ -23,12 +17,14 @@ int main() {
     // const string _s = to_string::to_string(320);
     // _r << _s.data() << '\n';
 
+    std::cout << std::setprecision(16) << fabsf(-93847.324337f) << '\n';
+    std::cout << std::setprecision(16) << truncf(-93847.324337f) << '\n';
 
-    std::cout << hf_math::truncf(-93847.324337f);
 
-    char buffer[128];
-    hexforge_cio_in::cio_read(buffer, 128);
-    io::cio_out << buffer << '\n';
+
+    //char buffer[128];
+    //hexforge_cio_in::cio_read(buffer, 128);
+    //io::cio_out << buffer << '\n';
     //↓↓↓ Spooky scary... do not interact with lest it become enraged ↓↓↓
     __asm__("");
     ////////////////////

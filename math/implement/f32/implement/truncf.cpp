@@ -2,9 +2,12 @@
     // Created by David on 6/1/2025.
     //
 
-    #include "../trunc.h"
-    #include "../f32.h"
+#define INTERNAL_CPP
 
+#include "../internal/truncf.h"
+#include "../internal/f32.h"
+
+#undef INTERNAL_CPP
     /**
      * Basically, an integer will never have bits past the
      * nth leading mantissa bit, where n is the exponent.

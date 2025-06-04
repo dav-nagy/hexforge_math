@@ -4,8 +4,8 @@
 
 #include "../to_string.h"
 
-#include "../../math/f32/f32.h"
-#include "../../math/f32/f32_functions.h"
+#include "../../math/implement/f32/internal/f32.h"
+#include "../../math/implement/f32/internal/f32_functions.h"
 
 using namespace hexforge_string;
 

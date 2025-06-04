@@ -2,8 +2,8 @@
 // Created by David on 5/31/2025.
 //
 
-#include "../f32_functions.h"
-#include "../f32.h"
+#include "../internal/f32_functions.h"
+#include "../internal/f32.h"
 #include "../../char/nan_helper.h"
 
 //TODO Strong aliases and hidden internal files with inlined wrappers

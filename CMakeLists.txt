@@ -36,4 +36,9 @@ add_executable(math main.cpp
         math/implement/f32/internal/truncf.h
         math/c_math.h
         math/internal/hf_math.h
+        math/implement/f32/implement/fmaf.cpp
+        math/implement/f32/internal/fmaf.h
+        math/implement/f32/internal/numbers.h
+        math/implement/f32/implement/force_eval.cpp
+        math/implement/f32/internal/force_eval.h
 )

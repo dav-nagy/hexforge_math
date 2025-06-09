@@ -4,9 +4,7 @@
 
 #define INTERNAL_CPP
 #include "../internal/fabsf.h"
-
 #include "../internal/f32.h"
-
 #undef INTERNAL_CPP
 
 #ifndef ATTRIBUTE_H
@@ -25,6 +23,6 @@ extern "C" //Hide from C++ via inline C to avoid name mangling
 
 //extern "C"
 
-//This must go in extern "C" to avoid name mangling (Already defined in _strong_alias()
+extern "C" //This must go in extern "C" to avoid name mangling (Already defined in _strong_alias()
     //Format it nicely for the public API
     _strong_alias(_fabsf, _ieee754_fabsf);

@@ -6,10 +6,9 @@
 //Include guard
 #define HF_MATH_H
 
-
-
 extern "C"{
     float fabsf(float);
+    float fmaf(float, float, float);
     float truncf(float);
 }
 

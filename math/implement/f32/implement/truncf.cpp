@@ -1,6 +1,5 @@
 //
 // Created by David on 6/1/2025.
-//
 
 #define INTERNAL_CPP
 #include "../internal/truncf.h"//These file have checks for INTERNAL_CPP, so we wrap these #includes in said macro
@@ -10,7 +9,6 @@
 #include "../internal/numbers.h"
 
 #include "../../attribute/attribute.h"
-
 
 /*
  * Basically, an integer will never have bits past the
@@ -40,12 +38,12 @@
     float _ieee754_truncf(const float _f) {
 //This is not in any namespace as to avoid name mangling (Thanks, C++)
 
-    hexforge_f32::ieee754_f32 _fx(_f);
+    _ieee754_f32 _fx(_f);
     const unsigned int _sgn = _fx._i & _flt_sgn_mask; //Isolate the sign bit, should have 31 trailing zeros
-    //Detect subnormal input
-    if (_fx._f_core._exp == 0) {
-        _fx._i &= _flt_sgn_mask; //We can do this because subnormal floats trunc to zero,
-                             //and this is the sign bit mask which results in zero and an isolated sign bit.
+    //Detect subnormal input and all inputs below |+-1.0|
+    //We round these all to +-zero, depending on the sign bit
+    if (_fx._f_core._exp < _flt_exp_bias) {
+        _fx._i &= _flt_sgn_mask; //We can do this because subnormal / below-1.0f floats trunc to zero. This leaves only the sign bit.
         return _fx._f;
     }
     // |_f|
@@ -61,4 +59,4 @@
 
 extern "C"//This must go in extern "C" to avoid name mangling
     //Format it nicely for the public API
-    _strong_alias(_truncf, _ieee754_truncf);
+    _strong_alias(c_truncf, _ieee754_truncf);

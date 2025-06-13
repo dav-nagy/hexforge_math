@@ -16,12 +16,12 @@
 //This fmaf implementation is basically a carbon copy of glibc's
 //It needs to be super robust because many other functions use it for polynomial evaluation
 
-extern "C" _internal_hidden
-    float
-        _ieee754_fmaf(const float _x, const float _y, const float _z) {
+extern "C"
+	_internal_hidden
+    float _ieee754_fmaf(const float _x, const float _y, const float _z) {
 	float _ix = _x, _iy = _y, _iz = _z; //For actual work
 
-	hexforge_f32::ieee754_f32
+	_ieee754_f32
 		_fx(_x),
 		_fy(_y),
 		_fz(_z);
@@ -206,7 +206,6 @@ extern "C" _internal_hidden
 			_fy._f = _ah + _fx._f;
 			if (_fy._f_core._exp == 49)
 				return _fy._f * 0x1p-49f;
-			int _sticky = _inexact;
 			//Actual magic
 			//If _fz._f is subnormal
 			_fy._f = 0.0f;
@@ -224,4 +223,4 @@ extern "C" _internal_hidden
 
 extern "C" //This must go in extern "C" to avoid name mangling
 	//Format it nicely for the public API
-	_strong_alias(_fmaf, _ieee754_fmaf);
+	_strong_alias(c_fmaf, _ieee754_fmaf);

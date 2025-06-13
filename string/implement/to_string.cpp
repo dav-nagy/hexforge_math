@@ -4,9 +4,6 @@
 
 #include "../to_string.h"
 
-#include "../../math/implement/f32/internal/f32.h"
-#include "../../math/implement/f32/internal/f32_functions.h"
-
 using namespace hexforge_string;
 
 //Convert a signed 32-bit integer _i to a base-10 string

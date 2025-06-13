@@ -19,8 +19,6 @@ add_executable(math main.cpp
         string/to_string.h
         string/implement/string.cpp
         string/string.h
-        math/implement/f32/implement/truncf.cpp
-        math/implement/f32/internal/truncf.h
         io/implement/io.cpp
         io/io.h
         io/input_output/ops/implement/cio_out_ops.cpp
@@ -41,4 +39,8 @@ add_executable(math main.cpp
         math/implement/f32/internal/numbers.h
         math/implement/f32/implement/force_eval.cpp
         math/implement/f32/internal/force_eval.h
+        math/implement/f32/implement/nextafterf.cpp
+        math/implement/f32/internal/nextafterf.h
+        math/implement/f32/implement/frexpf.cpp
+        math/implement/f32/internal/frexpf.h
 )

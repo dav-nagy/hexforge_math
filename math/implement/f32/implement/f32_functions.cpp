@@ -2,49 +2,62 @@
 // Created by David on 5/31/2025.
 //
 
+
+#define INTERNAL_CPP
 #include "../internal/f32_functions.h"
 #include "../internal/f32.h"
 #include "../../char/nan_helper.h"
+#undef INTERNAL_CPP
 
-//TODO Strong aliases and hidden internal files with inlined wrappers
-
-using namespace hexforge_f32;
+#include "../../attribute/attribute.h"
 
 //Generate a 32-bit positive infinity
-float hexforge_f32_functions::inff() {
-    return ieee754_f32(0x7f800000)._f;
-}
+extern "C"
+    _internal_hidden
+    float _ieee754_inff() {
+    return _ieee754_f32(0x7f800000)._f;
+    }
 //Generate a 32-bit infinity
 //If _n is true, it returns negative infinity. If it is false, it returns infinity
-float hexforge_f32_functions::inff(const bool _n = false) {
-    return ieee754_f32(0x7f800000 | (static_cast<int>(_n) << 0x1f))._f;
+extern "C"
+    _internal_hidden
+    float _ieee754_ninff(const bool _n = false) {
+    return _ieee754_f32(0x7f800000 | (static_cast<int>(_n) << 0x1f))._f;
 }
 
 
 //Detect if a 32-bit floating point number _f is infinity
-bool hexforge_f32_functions::is_pinff(const float _f) {
-    return ieee754_f32(_f)._i == 0x7f800000; // Bitfield for +inf
+extern "C"
+    _internal_hidden
+    bool _ieee754_is_pinff(const float _f) {
+    return _ieee754_f32(_f)._i == 0x7f800000; // Bitfield for +inf
 }
 //Detect if a 32-bit floating point number _f is -infinity
-bool hexforge_f32_functions::is_ninff(const float _f) {
-    return ieee754_f32(_f)._i == 0xff800000; // Bitfield for -inf
+extern "C"
+    _internal_hidden
+    bool _ieee754_is_ninff(const float _f) {
+    return _ieee754_f32(_f)._i == 0xff800000; // Bitfield for -inf
 }
 //Detect if a 32-bit floating point number _f is any infinity
-bool hexforge_f32_functions::is_inff(const float _f) {
-    return (ieee754_f32(_f)._i & 0x7fffffff) /*|_f|*/ == 0x7f800000; //Bitfield for +inf
+extern "C"
+    _internal_hidden
+    bool _ieee754_is_inff(const float _f) {
+    return (_ieee754_f32(_f)._i & 0x7fffffff) /*|_f|*/ == 0x7f800000; //Bitfield for +inf
 }
 
 //Create a 32-bit NaN (Not a Number)
 // _msg is to be a base-10 <=23-bit integer that will be encoded in the mantissa
 // If _quiet is true, the function will generate a quiet NaN (i.e. a NaN that will propagate through functions)
 // If _quiet is false, the function will generate a signaling NaN (i.e. a NaN that will throw an error if caught)
-float hexforge_f32_functions::nanf(const char* _msg, const bool _quiet = true){
+extern "C"
+    _internal_hidden
+    float _ieee754_nanf(const char* _msg, const bool _quiet = true){
     //So this actually has practical applications in debugging later math functions!
 
     const int _s_msg_int = hexforge_nan_char::parse_nan_char_32(_msg); //Converts the character message into an unsigned integer
-    const unsigned int _msg_int = _s_msg_int * (_s_msg_int > 0 ? 1 : -1); //Absolute value of the integer message (could be optimized!) //TODO optimize absolute value in nanf(const char*, bool)
+    const unsigned int _msg_int = _s_msg_int > 0 ? _s_msg_int : -_s_msg_int; //Absolute value of the integer message (could be optimized!)
     const bool _sgn = (_s_msg_int < 0); //Sign bit of the integer message
-    ieee754_f32 _r((_msg_int| 0x7f800000) /*Infinite exponent mask, will determine leading mantissa bit later*/
+    _ieee754_f32 _r((_msg_int| 0x7f800000) /*Infinite exponent mask, will determine leading mantissa bit later*/
                                  & ((_quiet << 0x16) | 0x7fbfffff));
     // 0x7fbfffff = 0b1111111101111111111111111111111 (Everything but sign and quiet nan flag)
 
@@ -54,15 +67,38 @@ float hexforge_f32_functions::nanf(const char* _msg, const bool _quiet = true){
 }
 
 //Detect if a 32-bit floating point number _f is a quiet NaN
-bool hexforge_f32_functions::is_qnanf(const float _f) {
-    return (ieee754_f32(_f)._i & 0x7fc00000) == 0x7fc00000;
+extern "C"
+    _internal_hidden
+    bool _ieee754_is_qnanf(const float _f) {
+    return (_ieee754_f32(_f)._i & 0x7fc00000) == 0x7fc00000;
 }
 //Detect if a 32-bit floating point number _f is a signaling NaN
-bool hexforge_f32_functions::is_snanf(const float _f) {
-    return (ieee754_f32(_f)._i & 0x7fc00000) == 0x7f800000;
+extern "C"
+    _internal_hidden
+    bool _ieee754_is_snanf(const float _f) {
+    return (_ieee754_f32(_f)._i & 0x7fc00000) == 0x7f800000;
 }
 //Detect if a 32-bit floating point number _f is any type of NaN (Not a Number)
-bool hexforge_f32_functions::is_nanf(const float _f) {
-    const ieee754_f32 _fx(_f);
+extern "C"
+    _internal_hidden
+    bool _ieee754_is_nanf(const float _f) {
+    const _ieee754_f32 _fx(_f);
     return (_fx._f_core._exp == 0xff && _fx._f_core._mantissa != 0);
+}
+
+//A bunch of _strong_aliases to display this to the .h file for inline wrappers / public API
+
+extern "C"{
+    _strong_alias(c_inff, _ieee754_inff);
+    _strong_alias(c_ninff, _ieee754_ninff);
+
+    _strong_alias(c_is_pinfff, _ieee754_is_pinff);
+    _strong_alias(c_is_ninff, _ieee754_is_ninff);
+    _strong_alias(c_is_inff, _ieee754_is_inff);
+
+    _strong_alias(c_nanf, _ieee754_nanf);
+
+    _strong_alias(c_is_qnanf, _ieee754_is_qnanf);
+    _strong_alias(c_is_snanf, _ieee754_is_snanf);
+    _strong_alias(c_is_nanf, _ieee754_is_nanf);
 }

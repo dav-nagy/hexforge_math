@@ -6,7 +6,7 @@
 //Include Guard
 #define FORCE_EVAL_H
 
-#if C_MATH_INCLUDE && !defined(_INTERNAL_CPP)
+#if !defined(MATH_INCLUDE) && !defined(INTERNAL_CPP)
         //Stop people from directly including this file unless they Know how...
         #error Do not include fabsf.h directly. Use "c_math.h" instead.
 #endif

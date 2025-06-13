@@ -6,15 +6,16 @@
 //Include guard
 #define ATTRIBUTE_H
 
-//Let the linker know that symbol _n is equivalent to _an (You likely will not know)
+//Let the linker know that symbol _n is equivalent to _an
+//(You likely will not know unless you are delving into this source code)
 
 #define _strong_alias(_an, _n) \
-    extern "C" __typeof(_n) _an __attribute__((alias(#_n)))
+    extern "C" __typeof(_n) _an __attribute__(( alias(#_n) ))
 #define _weak_alias(_an, _n) \
-    extern "C" __typeof(_n) _an __attribute__((weak, alias(#_n)))
+    extern "C" __typeof(_n) _an __attribute__(( weak, alias(#_n) ))
 //This library is for C++ ONLY (So, no need to #ifdef __cplusplus)
 
-#if defined(__ELF__) //Linux and other ELF systems
+#ifdef __ELF__ //Linux and other ELF systems
     #define _internal_hidden \
     extern "C" __attribute__((visibility("hidden")))
     #define _export //Useless

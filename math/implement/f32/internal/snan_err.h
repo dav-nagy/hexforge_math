@@ -12,7 +12,7 @@ namespace hexforge_snan_err {
     //If so, throw an exception
     //This function is designed to be implemented in a try{...}catch(...){...} environment
     inline void throw_snan(const float _f) {
-        if (hexforge_f32_functions::is_snanf) throw "Signaling NaN detected";
+        if (c_is_snanf(_f)) throw "Signaling NaN detected";
     }
 }
 

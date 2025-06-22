@@ -11,6 +11,9 @@
 
 #undef INTERNAL_CPP
 
+//TODO: Make the implementation correctly rounded in all cases.
+//	Right now, it can stray by as much as one ulp!
+
 #include "../../attribute/attribute.h"
 
 //This fmaf implementation is basically a carbon copy of glibc's
@@ -20,6 +23,7 @@ extern "C"
 	_internal_hidden
     float _ieee754_fmaf(const float _x, const float _y, const float _z) {
 	float _ix = _x, _iy = _y, _iz = _z; //For actual work
+	//return _x * _y + _z;
 
 	_ieee754_f32
 		_fx(_x),
@@ -27,7 +31,7 @@ extern "C"
 		_fz(_z);
 	int _scale = 0;
 	//We can skip all the hard scaling work if these conditions are not met (i.e. the floats are safe to work with)
-	if (_fx._f_core._exp + _fy._f_core._exp >= _flt_exp_bias - _flt_mant_len || //_x * _y will overflow(either now or in scaling)
+	if (_fx._f_core._exp + _fy._f_core._exp >= 0xff + _flt_exp_bias - _flt_mant_len || //_x * _y will overflow(either now or in scaling)
 		_fx._f_core._exp >= 0xff - _flt_mant_len || //_x is very large
 		_fy._f_core._exp >= 0xff - _flt_mant_len || //_y is very large
 		_fz._f_core._exp >= 0xff - _flt_mant_len || //_z is very large
@@ -42,6 +46,7 @@ extern "C"
 			_fy._f_core._exp != 0xff)
 			return _z;
 		//If _z is zero and _x and _y are not, return _x * _y (No extended precision needed)
+		//We leave out z due to possible incorrect signed zeros arising if _x * _y underflows.
 		if (_z == 0.0f && _x != 0.0f && _y != 0.0f)
 			return _x * _y;
 		//If any of _x, _y, or _z is non-finite, or _x * _y is zero, simply return _x * _y + _z
@@ -50,13 +55,13 @@ extern "C"
 			_fy._f_core._exp == 0xff ||
 			_x == 0.0f || _y == 0.0f)
 			return _x * _y + _z;
-		//This is when fmaf() will certainly overflow (We can just return _x * _y
+		//This is when fmaf() will certainly overflow (We can just return _x * _y)
 		if (_fx._f_core._exp + _fy._f_core._exp > 0xff /*255*/ + _flt_exp_bias)
 			return _x * _y;
 
 		//This results in an exponent of -25 (- 127), so 1/4 of _flt_sub_epsilon
 		//Now, only the sign of the result matters...
-		if (_fx._f_core._exp + _fy._f_core._exp > (_flt_exp_bias - _flt_mant_len - 2)) {
+		if (_fx._f_core._exp + _fy._f_core._exp < (_flt_exp_bias - _flt_mant_len - 2)) {
 			const bool _n = _fx._f_core._sgn ^ _fy._f_core._sgn;
 			const float _tiny = _n? -_flt_sub_epsilon : _flt_sub_epsilon;
 			if (_fz._f_core._exp >= 2) //Numbers larger than or as large as this will not be affected by adding _tiny
@@ -102,7 +107,7 @@ extern "C"
 			else if (_fy._f_core._exp > _flt_mant_len)
 				_fy._f_core._exp -= _flt_mant_len;
 			//Scale down _z in the same way to maintain accuracy with computations
-			_fz._f_core._exp -= _flt_mant_len;
+				_fz._f_core._exp -= _flt_mant_len;
 			_scale = 1;
 		}
 		else if (_fx._f_core._exp >= -0xff - _flt_mant_len) { //_x only is very large
@@ -122,44 +127,55 @@ extern "C"
 			else
 				_fx._f *= 0x1p+23;
 		}
-		else { //Everything is fine* *_x, _y, and _z are all relatively small
+		else if (_fx._f_core._exp + _fy._f_core._exp <= _flt_exp_bias + _flt_mant_len) {
 			if (_fx._f_core._exp > _fy._f_core._exp)
-				_fx._f_core._exp += 2 * _fy._f_core._exp + 2;
+				_fx._f_core._exp += 2 * _flt_mant_len + 2; //48
 			else
-				_fy._f_core._exp += 2 * _fy._f_core._exp + 2;
+				_fy._f_core._exp += 2 * _flt_mant_len + 2; //48
 			if (_fz._f_core._exp <= 4 * _flt_mant_len + 6) { //94 - Probably just heuristic
-															 //Idk I stole it from glibc anyway
+															 //IDK I stole it from glibc anyway
 				if (_fz._f_core._exp) //_z is normal
 					_fz._f_core._exp += 2 * _flt_mant_len + 2; //48
 				else
 					_fz._f *= 0x1p+48;
 				_scale = -1;
 			}
+			//_scale = -1;
 			//Otherwise _x * _y is fine
+			//Everything is fine* *_x, _y, and _z are all relatively small
 		}
 		//Redefine parameters to be scaled versions
 		_ix = _fx._f;
 		_iy = _fy._f;
 		_iz = _fz._f;
 }
-	//Multiplication of _rh + _rl = _x * _y through Dekker's precision multiplying algorithm
-	constexpr int _c = _flt_dk_split;
-	float _xh = _ix * _c,
-		   _yh = _iy * _c;
-	const float _rh = _ix * _iy; //High part of the product
+	if ((_ix == 0.0f || _iy == 0.0f) && _iz == 0.0f) {
+		_ix = math_opt_barrier(_x);
+		return _ix * _iy + _iz;
+	}
+
+	//Multiplication of _rh + _rl = _x * _y through Dekker's multiplying algorithm
+#define _c 4097 // Constant used for Dekker splitting.
+				// = ((1 << (_flt_mant_len + 1) / 2) + 1)
+	//Apparently 13 does not work!
+	float _xh = _ix * _c;
+	float _yh = _iy * _c;
+#undef _c
+	float _rh = _ix * _iy; //High part of the product
+
 	_xh = (_ix - _xh) + _xh;
 	_yh = (_iy - _yh) + _yh;
-	const float _xl = _ix - _xh,
-				_yl = _iy - _yh,
-				_rl = (((_xh * _yh - _rh) + _xh * _yl) + _xl * _yh) + _xl * _yl, //Low part (error) of the product
-	//Addition of _ah + _al = _rh + _z through Knuth's precision adding algorithm
-				_ah = _iz + _rh; //High part of sum
-	float _th = _ah - _iz,   //Intermediate terms _th and _tl
-		   _tl = _ah - _th; //^
+	const float _xl = _ix - _xh;
+	const float _yl = _iy - _yh;
+	const float _rl = (((_xh * _yh - _rh) + _xh * _yl) + _xl * _yh) + _xl * _yl; //Low part (error) of the product
+	//Addition of _ah + _al = _rh + _z through Knuth's adding algorithm
+	float _ah = _iz + _rh, //High part of sum
+		  _th = _ah - _iz,   //Intermediate terms _th and _tl
+		  _tl = _ah - _th; //^
 	_th = _rh - _th;
 	_tl = _iz - _tl;
-	const float _al = _th + _tl, //Low part (error) of sum
-				_err = _al + _rl; //Total combined error of the product and sum
+	const float _al = _th + _tl; //Low part (error) of sum
+
 	//Ensure the arithmetic is evaluated right now
 	math_f_eval(_rl);
 	math_f_eval(_al);
@@ -169,55 +185,66 @@ extern "C"
 		math_opt_barrier(_iz);
 		return _iz + _rh;
 	}
+
+	//const float _err = _al + _rl; //Total combined error of the product and sum
+
 	//Currently the error is between 0-0.5ulp (Which rounds to 1ulp)
 	//Now we round to odd
 
-	//Right now this is an annoying way of getting the ulp and rounding to odd, which I might improve
-	_fx._f = _al + _rl;
-	_fy._f = (_fx._f + _ah); _fy._f_core._exp = _fy._f_core._exp - 24; //0.5ulp(_x) = ldexpf(1, ilogbf(_x)-24)
+	_fx._f = math_opt_barrier(_al + _rl);
 
-	int _inexact = (_err != 0.0f);
+	int _inexact = (_fx._f != 0.0f);
 
-	if (_scale < 0) {
-	 	if ((_fx._f_core._mantissa & 1) == 0) //Mantissa is even - round to odd
-	 		_fx._f_core._mantissa |= (_err == _fy._f /*Inexact by 0.5ulp*/); //Round to odd
-		_fz._f = _ah + _fx._f;
-		math_f_eval(_fz._f); //Evaluate it now
+	if (_scale == -1) {
+		_fy._f = _ah + _fx._f;
+	 	if ((_fy._f_core._mantissa & 1) == 0) //Mantissa is even - round to odd
+	 		_fy._f_core._mantissa |= _inexact; //Round to odd
+		//_fz._f = _ah + _fx._f;
+		math_f_eval(_fy._f); //Evaluate it now
 	}
+
+	_ah = math_opt_barrier(_ah);
+
 	if (_scale == 0) {
+		_fx._f += _ah;
 		if ((_fx._f_core._mantissa & 1) == 0 && _fx._f_core._exp != 0xff) //Finite, even-mantissa float
-			_fx._f_core._mantissa |= (_err == _fy._f );
-		return _ah + _fx._f;
+			_fx._f_core._mantissa |= (_inexact);
+		return _fx._f;
 	}
-	if (_scale > 0) {
+	if (_scale == 1) {
+		_fx._f += _ah;
+		_fx._f *= 0x1p23f;
 		if ((_fx._f_core._mantissa & 1) == 0 && _fx._f_core._exp != 0xff) //Finite, even-mantissa float
-			_fx._f_core._mantissa |= (_err == _fy._f );
-		return (_ah + _fx._f) * 0x1p24f;
+			_fx._f_core._mantissa |= _inexact;
+		return _fx._f;
 	}
-	/*else*/
-	{
+	else {
 		//Check if _ah + _fx._f is exact (Then the rounding happens only when scaling down)
-		if (_err != _fy._f)
-			return _fz._f * 0x1p48f;
+		if (!_inexact) {
+			return _fy._f * 0x1p-48f;
+		}
 		//If result rounded to zero is normal (No double rounding happens)
-		if (_fz._f_core._exp > 48) //If exponent is large enough we can scale down safely
-			return (_ah + _fz._f) * 0x1p-48f;
-		if (_fz._f_core._exp == 48) {
-			_fy._f = _ah + _fx._f;
-			if (_fy._f_core._exp == 49)
-				return _fy._f * 0x1p-49f;
+		if (_fy._f_core._exp > 48) {
+			//If exponent is large enough we can scale down safely
+			return (_ah + _fx._f) * 0x1p-48f;
+		}
+		if (_fy._f_core._exp == 48) { //_fz._f is subnormal (Because we scaled by 0x1p48f before)
+			_fz._f = _ah + _fx._f;
+			if (_fz._f_core._exp == 49) {
+				return _fz._f * 0x1p-49f;
+			}
 			//Actual magic
 			//If _fz._f is subnormal
-			_fy._f = 0.0f;
-			_fy._f_core._mantissa = ((_fz._f_core._mantissa & 3) << 1) | _inexact;
-			_fy._f_core._sgn = _fz._f_core._sgn;
-			_fz._f_core._mantissa &= ~3u;
-			_fz._f *= 0x1p-48f;
-			_fy._f *= 0x1p-2f;
-			return _fz._f + _fy._f;
+			_fz._f = 0.0f;
+			_fz._f_core._mantissa = ((_fy._f_core._mantissa & 3) << 1) | _inexact;
+			_fz._f_core._sgn = _fy._f_core._sgn;
+			_fy._f_core._mantissa &= ~3u;
+			_fy._f *= 0x1p-48f;
+			_fz._f *= 0x1p-2f;
+			return _fy._f + _fz._f;
 		}
-		_fz._f_core._mantissa |= _inexact;
-		return _fz._f * 0x1p-48f;
+		_fy._f_core._mantissa |= _inexact;
+		return _fy._f * 0x1p-48f;
 	}
 } //_ieee754_fmaf
 

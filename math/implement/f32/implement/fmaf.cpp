@@ -20,7 +20,7 @@
 //It needs to be super robust because many other functions use it for polynomial evaluation
 
 extern "C"
-	_internal_hidden
+	_internal
     float _ieee754_fmaf(const float _x, const float _y, const float _z) {
 	float _ix = _x, _iy = _y, _iz = _z; //For actual work
 	//return _x * _y + _z;

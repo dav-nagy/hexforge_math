@@ -13,34 +13,34 @@
 
 //Generate a 32-bit positive infinity
 extern "C"
-    _internal_hidden
+    _internal
     float _ieee754_inff() {
     return _ieee754_f32(0x7f800000)._f;
     }
 //Generate a 32-bit infinity
 //If _n is true, it returns negative infinity. If it is false, it returns infinity
 extern "C"
-    _internal_hidden
+    _internal
     float _ieee754_ninff(const bool _n = false) {
-    return _ieee754_f32(0x7f800000 | (static_cast<int>(_n) << 0x1f))._f;
+    return _ieee754_f32(0x7f800000 | (_n << 0x1f))._f;
 }
 
 
 //Detect if a 32-bit floating point number _f is infinity
 extern "C"
-    _internal_hidden
+    _internal
     bool _ieee754_is_pinff(const float _f) {
     return _ieee754_f32(_f)._i == 0x7f800000; // Bitfield for +inf
 }
 //Detect if a 32-bit floating point number _f is -infinity
 extern "C"
-    _internal_hidden
+    _internal
     bool _ieee754_is_ninff(const float _f) {
     return _ieee754_f32(_f)._i == 0xff800000; // Bitfield for -inf
 }
 //Detect if a 32-bit floating point number _f is any infinity
 extern "C"
-    _internal_hidden
+    _internal
     bool _ieee754_is_inff(const float _f) {
     return (_ieee754_f32(_f)._i & 0x7fffffff) /*|_f|*/ == 0x7f800000; //Bitfield for +inf
 }
@@ -50,7 +50,7 @@ extern "C"
 // If _quiet is true, the function will generate a quiet NaN (i.e. a NaN that will propagate through functions)
 // If _quiet is false, the function will generate a signaling NaN (i.e. a NaN that will throw an error if caught)
 extern "C"
-    _internal_hidden
+    _internal
     float _ieee754_nanf(const char* _msg, const bool _quiet = true){
     //So this actually has practical applications in debugging later math functions!
 
@@ -68,19 +68,19 @@ extern "C"
 
 //Detect if a 32-bit floating point number _f is a quiet NaN
 extern "C"
-    _internal_hidden
+    _internal
     bool _ieee754_is_qnanf(const float _f) {
     return (_ieee754_f32(_f)._i & 0x7fc00000) == 0x7fc00000;
 }
 //Detect if a 32-bit floating point number _f is a signaling NaN
 extern "C"
-    _internal_hidden
+    _internal
     bool _ieee754_is_snanf(const float _f) {
     return (_ieee754_f32(_f)._i & 0x7fc00000) == 0x7f800000;
 }
 //Detect if a 32-bit floating point number _f is any type of NaN (Not a Number)
 extern "C"
-    _internal_hidden
+    _internal
     bool _ieee754_is_nanf(const float _f) {
     const _ieee754_f32 _fx(_f);
     return (_fx._f_core._exp == 0xff && _fx._f_core._mantissa != 0);

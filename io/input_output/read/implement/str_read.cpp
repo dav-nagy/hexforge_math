@@ -44,7 +44,7 @@ static void rc_read(char* _buf, unsigned long _buf_size) {
   Read the console...
   char* _buf - Response will be written to this
  */
-void hexforge_cio_in::cio_read(char* _buf, unsigned long _buf_size) {
+void c_cio_read(char* _buf, unsigned long _buf_size) {
     return rc_read(_buf, _buf_size);
 }
 

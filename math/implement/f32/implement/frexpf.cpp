@@ -12,7 +12,7 @@
 #include "../internal/numbers.h"
 
 extern "C"
-    _internal_hidden
+    _internal
     float _ieee754_frexpf(const float _x, int* _exp) {
     _ieee754_f32 _ix(_x);
     //Sign bit of _x shorted 31 places so it is nicely lined up with the floating-point format

@@ -43,4 +43,11 @@ add_executable(math main.cpp
         math/implement/f32/internal/nextafterf.h
         math/implement/f32/implement/frexpf.cpp
         math/implement/f32/internal/frexpf.h
+        math/implement/f32/implement/scalbnf.cpp
+        math/implement/f32/internal/scalbnf.h
+        evil.cpp
+        math/implement/f32/internal/round_mode.h
+        math/implement/f32/implement/ldexpf.cpp
+        math/implement/f32/internal/ldexpf.h
+        math/implement/f32/internal/radix.h
 )

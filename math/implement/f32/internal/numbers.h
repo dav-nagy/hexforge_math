@@ -94,6 +94,10 @@ inline constexpr unsigned int _flt_sgn_len = 1;
 ///imposed by the IEEE754 standard.
 inline constexpr unsigned int _flt_exp_bias = 0x07f;
 
+/*
+ * Constants related to floating-point and used in some functions
+ */
+
 ///The bit pattern of the largest possible non-integral value in the 32-bit floating-point format.
 ///Basically only used for truncf() and other rounding functions
 inline constexpr unsigned int _flt_max_dec_bits = 0x4affffff;

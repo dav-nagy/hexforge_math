@@ -10,7 +10,7 @@
 #include "../../attribute/attribute.h"
 
 extern "C"
-    _internal_hidden
+    _internal
     float _ieee754_nextafterf(const float _x, const float _y) {
     //To access the floating-point data
     _ieee754_f32 _ix(_x), _iy(_y);

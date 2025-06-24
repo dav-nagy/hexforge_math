@@ -10,7 +10,7 @@
 #include "../../attribute/attribute.h"
 
 extern "C" //Hide from C++ via inline C to avoid name mangling
-    _internal_hidden //Make the internal implementation invisible to declutter the public API
+    _internal //Make the internal implementation invisible to declutter the public API
     float _ieee754_fabsf(const float _f) {
         _ieee754_f32 _fx(_f);
         _fx._i &= 0x7fffffff; // 32-bit floating point exp/mantissa mask (Discards sign bit)

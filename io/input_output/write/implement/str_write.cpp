@@ -42,7 +42,7 @@ static void rc_write(const char* _msg) {
   Write to the console...
   const char* _msg - Message to be written to the console - can be chained with string operator<<(string)
  */
-void hexforge_cio_out::cio_write(const char* _msg) {
+void c_cio_write(const char* _msg) {
     return rc_write(_msg);
 }
 

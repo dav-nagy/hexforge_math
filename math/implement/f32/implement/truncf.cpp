@@ -11,7 +11,7 @@
 #include "../../attribute/attribute.h"
 
 /*
- * Basically, an integer will never have bits past the
+ * Basically, an integer represented as a float will never have bits past the
  * nth leading mantissa bit, where n is the unbiased exponent.
  * This lets us create a mask by getting all 1's in the
  * mantissa, then shifting it by 23 - n, because the
@@ -34,7 +34,7 @@
 
 ///Return the smallest integral value smaller than a 32-bit floating point number _f (Rounding towards zero)
 ///@param _f 32-bit floating-point number to round towards zero
-    extern "C" _internal_hidden // Some evil gatekeeping to keep the public API clean
+    extern "C" _internal // Some evil gatekeeping to keep the public API clean
     float _ieee754_truncf(const float _f) {
 //This is not in any namespace as to avoid name mangling (Thanks, C++)
 
@@ -43,7 +43,7 @@
     //Detect subnormal input and all inputs below |+-1.0|
     //We round these all to +-zero, depending on the sign bit
     if (_fx._f_core._exp < _flt_exp_bias) {
-        _fx._i &= _flt_sgn_mask; //We can do this because subnormal / below-1.0f floats trunc to zero. This leaves only the sign bit.
+        _fx._i = _sgn; //We can do this because subnormal / below-1.0f floats trunc to zero. This leaves only the sign bit.
         return _fx._f;
     }
     // |_f|

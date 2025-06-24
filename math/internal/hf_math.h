@@ -12,6 +12,9 @@ extern "C"{
     float c_fmaf(float, float, float);
 
     float c_frexpf(float, int*);
+    float c_ldexpf(float, int);
+
+    float c_scalbnf(float, int);
 
     float c_inff();
     float c_ninff(bool);

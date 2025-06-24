@@ -8,12 +8,16 @@
       <w>frexpf</w>
       <w>hexforge</w>
       <w>inff</w>
+      <w>ldexp</w>
+      <w>ldexpf</w>
       <w>mant</w>
       <w>nanf</w>
+      <w>nextafter</w>
       <w>nextafterf</w>
       <w>ninff</w>
       <w>pinff</w>
       <w>qnanf</w>
+      <w>scalbnf</w>
       <w>snanf</w>
       <w>truncf</w>
     </words>

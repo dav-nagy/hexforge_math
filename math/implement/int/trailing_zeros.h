@@ -6,8 +6,7 @@
 //Include guard
 #define TRAILING_ZEROS_H
 
-namespace hexforge_trailing_zeros {
-    int trailing_zeros(int);
-}
+extern "C"
+    int c_trailing_zeros(int);
 
 #endif //TRAILING_ZEROS_H

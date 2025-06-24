@@ -1,10 +1,9 @@
 //
-// Created by David on 6/11/2025.
+// Created by David on 6/24/2025.
 //
 
-#ifndef FREXPF_H
-//Include guard
-#define FREXPF_H
+#ifndef LDEXPF_H
+#define LDEXPF_H
 
 #if !defined(MATH_INCLUDE) && !defined(INTERNAL_CPP)
         //Stop people from directly including this file unless they Know how...
@@ -14,4 +13,4 @@
 extern "C"
         float c_ldexpf(float, int);
 
-#endif //FREXP_H
+#endif //LDEXPF_H

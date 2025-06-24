@@ -9,15 +9,74 @@
 #define C_MATH_INCLUDE
 
 #include "internal/hf_math.h"
+#include "implement/f32/internal/radix.h"
+
+#ifdef NO_INCLUDE
+    #error Something was included that should not have been.
+#endif
 
 namespace hf_math {
     using ::c_fabsf;
 
+    ///Return the absolute value of _f (i.e. |_f|).
+    ///
+    ///For implementation, see implement/f32/implement/fabsf.cpp.
+    ///@param _f The number to take the absolute value of.
+    inline float fabs(const float _f)
+    { return c_fabsf(_f); }
+
     using ::c_fmaf;
+
+    ///Return _x * _y + _z as a ternary operation with one instance of rounding.
+    ///
+    ///For implementation, see implement/f32/implement/fmaf.cpp.
+    ///@param _x One of the multiplicands, to be multiplied with _y.
+    ///@param _y Another multiplicand, to be multiplied with _x.
+    ///@param _z The independent summand, the other one being the product of _x and _y.
+    inline float fma(const float _x, const float _y, const float _z)
+    { return c_fmaf(_x, _y, _z); }
 
     using ::c_frexpf;
 
+    ///Return a value _x so that _x ∈ [0.5, 1.0), and an integer _e
+    ///such that _x * 2^_e = _f.
+    ///
+    ///For implementation, see implement/f32/implement/frexpf.cpp.
+    ///@param _f The floating-point value to do the calculation on.
+    ///@param _exp The integral exponent variable.
+    ///(It is passed as an int pointer).
+    inline float frexp(const float _f, int* _exp)
+    { return c_frexpf(_f, _exp); }
+
+    using ::c_ldexpf;
+
+    ///Return the value _f * (radix)^_exp correctly rounded.
+    ///On a system where the radix is 2 (i.e. a binary system), this is equivalent to scalbnf(_f, _exp).
+    ///
+    ///Only a radix of 2 is supported. If your system is not radix-2, that is exceedingly rare.
+    ///
+    ///For implementation, see implement/f32/implement/scalbnf.cpp
+    ///or implement/f32/implement/ldexpf.cpp.
+    ///@param _f The floating-point multiplicand.
+    ///@param _exp The exponent of 2 to multiply _f by.
+    inline float ldexp(const float _f, const int _exp)
+        { return c_ldexpf(_f, _exp); }
+
+    using ::c_scalbnf;
+
+    ///Return the value _f * 2^_exp correctly rounded.
+    ///
+    ///For implementation, see implement/f32/implement/scalbnf.cpp
+    ///or implement/f32/implement/ldexpf.cpp.
+    ///@param _f The floating-point multiplicand.
+    ///@param _exp The exponent of 2 to multiply _f by.
+    inline float scalbn(const float _f, const int _exp)
+        { return c_scalbnf(_f, _exp); }
+
     using ::c_inff;
+
+
+
     using ::c_ninff;
 
     using ::c_is_inff;
@@ -34,31 +93,6 @@ namespace hf_math {
 
     using ::c_truncf;
 
-    ///Return the absolute value of _f (i.e. |_f|).
-    ///
-    ///For implementation, see implement/f32/implement/fabsf.cpp.
-    ///@param _f The number to take the absolute value of.
-    inline float fabs(const float _f)
-        { return c_fabsf(_f); }
-
-    ///Return _x * _y + _z as a ternary operation with one instance of rounding.
-    ///
-    ///For implementation, see implement/f32/implement/fmaf.cpp.
-    ///@param _x One of the multiplicands, to be multiplied with _y.
-    ///@param _y Another multiplicand, to be multiplied with _x.
-    ///@param _z The independent summand, the other one being the product of _x and _y.
-    inline float fma(const float _x, const float _y, const float _z)
-        { return c_fmaf(_x, _y, _z); }
-
-    ///Return a value _x so that _x ∈ [0.5, 1.0), and an integer _e
-    ///such that _x * 2^_e = _f.
-    ///
-    ///For implementation, see implement/f32/implement/frexpf.cpp.
-    ///@param _f The floating-point value to do the calculation on.
-    ///@param _e The integral exponent variable.
-    ///(It is passed as an int pointer).
-    inline float frexp(const float _f, int* _e)
-        { return c_frexpf(_f, _e); }
 
     ///Return a 32-bit positive infinity.
     ///

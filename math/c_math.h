@@ -5,7 +5,6 @@
 
 
 /*TODO:
- * ilogbf
  * copysignf
  * isfinitef
  * isnormalf
@@ -24,12 +23,42 @@
 
 #define C_MATH_INCLUDE
 
-#include "internal/hf_math.h"
 #include "implement/f32/internal/radix.h"
 
 #ifdef NO_INCLUDE
     #error Something was included that should not have been.
 #endif
+
+extern "C"{
+    float c_fabsf(float);
+
+    float c_fmaf(float, float, float);
+
+    float c_frexpf(float, int*);
+
+    int c_ilogbf(float);
+
+    float c_ldexpf(float, int);
+
+    float c_scalbnf(float, int);
+
+    float c_inff();
+    float c_ninff(bool);
+
+    bool c_is_inff(float);
+    bool c_is_ninff(float);
+    bool c_is_pinff(float);
+
+    bool c_is_nanf(float);
+    bool c_is_qnanf(float);
+    bool c_is_snanf(float);
+
+    float c_nextafterf(float, float);
+
+    float c_nanf(const char*, bool);
+
+    float c_truncf(float);
+}
 
 namespace hf_math {
     using ::c_fabsf;
@@ -63,6 +92,21 @@ namespace hf_math {
     ///(It is passed as an int pointer).
     inline float frexp(const float _f, int* _exp)
     { return c_frexpf(_f, _exp); }
+
+    using ::c_ilogbf;
+
+    ///Return the integral unbiased exponent of _f, ignoring the sign of _f.
+    ///
+    ///Special cases:
+    ///
+    ///If _f is zero, return -INT_MAX.
+    ///If _f is inf/NaN, return INT_MAX.
+    ///
+    ///For implementation, see implement/f32/implement/ilogbf.cpp
+    ///@param _f The floating-point value to take the integral logarithm of.
+    inline int ilogb(const float _f)
+    { return c_ilogbf(_f); }
+
 
     using ::c_ldexpf;
 

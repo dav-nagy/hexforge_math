@@ -3,6 +3,12 @@ project(math)
 
 set(CMAKE_CXX_STANDARD 20)
 
+# Add NASM object
+enable_language(ASM_NASM)
+
+# NASM x64
+set(CMAKE_ASM_NASM_OBJECT_FORMAT win64)
+
 add_executable(math main.cpp
         math/implement/f32/internal/f32.h
         math/implement/f32/implement/f32.cpp
@@ -50,4 +56,7 @@ add_executable(math main.cpp
         math/implement/f32/implement/ldexpf.cpp
         math/implement/f32/internal/ldexpf.h
         math/implement/f32/internal/radix.h
+        asm.asm
+        math/implement/f32/implement/ilogbf.cpp
+        math/implement/f32/internal/ilogbf.h
 )

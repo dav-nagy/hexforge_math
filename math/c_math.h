@@ -2,8 +2,6 @@
 // Created by David on 6/3/2025.
 //
 
-
-
 /*TODO:
  * copysignf
  * isfinitef
@@ -20,6 +18,10 @@
 #ifndef C_MATH_H
 //Include Guard
 #define C_MATH_H
+
+#if !(defined(__GNUC__) || defined(__clang__))
+    #error "This library runs only on compilers that respect the ancient ways (gcc/clang)"
+#endif
 
 #define C_MATH_INCLUDE
 

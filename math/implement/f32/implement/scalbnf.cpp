@@ -3,15 +3,6 @@
 //
 
 /*
- * The Mantle by Agalloch:
- *  Such a good album! Something you would listen to
- *  all cozied up with hot chocolate looking out at the fjords...
- *  It has such jolly little tunes, and you get lost in the desolation
- *
- *  Also, Ulver's Bergtatt is very good...
- */
-
-/*
  * Method for subnormal results from normal numbers...
  * Multiply the normal number _fx by a power of 2 to get it subnormal
  * Record the multiplicand's exponent and subtract it from _e (Since _fx's exponent is zero)
@@ -57,40 +48,27 @@ extern "C"
     _ieee754_f32 _fx(_x);
     const unsigned int _sgn = _fx._i & _flt_sgn_mask;
     _fx._i &= _flt_abs_mask;
-
     int _e = _exp;
-
-    _fx._i &= _flt_abs_mask;
     if (_exp == 0 || _fx._i == 0 || _fx._i >= _flt_inf) {
         return _x;
     }
 
+    const int _r_exp = _fx._f_core._exp + _e;
     //Use a modified version of the MUSL implementation
-    if (_fx._f_core._exp + _e >= 255) //We catch overflow early so we don't have to go into the crazy statements
+    //We have overflow/underflow checks to get rid of a bunch of nested if()'s
+    if (_r_exp >= 255) //We catch overflow early so we don't have to go into the crazy statements
         return c_ninff(_sgn);
-    if (_fx._f_core._exp + _e < -23) { //The result is too small to store even as a subnormal!
+    if (_r_exp < -23) { //The result is too small to store even as a subnormal!
         _fx._i = _sgn; //This will create a signed zero
         return _fx._f;
     }
     if (_e > 127) {
         _fx._f *= 0x1p127f;
         _e -= 127;
-        if (_e > 127) {
-            _fx._f *= 0x1p127f;
-            _e -= 127;
-            if (_e > 127)
-                _e = 127;
-        }
     }
     else if (_e < -126) {
         _fx._f *= 0x1p-102f; // Equivalent to _fx._f *= 0x1p-126f * 0x1p24f;
         _e += 102;           // Same deal, equivalent to _e += 126 - 24;
-        if (_e < -126) {
-            _fx._f *= 0x1p-102f;
-            _e += 102;
-            if (_e < -126)
-                _e = -126;
-        }
     }
     const _ieee754_f32 _s((0x7f + _e) << 23);
     _fx._f *= _s._f;

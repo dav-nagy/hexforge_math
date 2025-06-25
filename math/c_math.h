@@ -2,6 +2,22 @@
 // Created by David on 6/3/2025.
 //
 
+
+
+/*TODO:
+ * ilogbf
+ * copysignf
+ * isfinitef
+ * isnormalf
+ * signbitf
+ * modff
+ * roundf
+ * floorf
+ * ceilf
+ * nearbyintf
+ * fpclassifyf
+ */
+
 #ifndef C_MATH_H
 //Include Guard
 #define C_MATH_H

@@ -3,16 +3,11 @@
 //
 
 /*TODO:
- * copysignf
- * isfinitef
- * isnormalf
- * signbitf
  * modff
  * roundf
  * floorf
  * ceilf
  * nearbyintf
- * fpclassifyf
  */
 
 #ifndef C_MATH_H
@@ -51,6 +46,12 @@ extern "C"{
     bool c_is_ninff(float);
     bool c_is_pinff(float);
 
+    bool c_is_finitef(float);
+    bool c_is_normalf(float);
+    int c_signbitf(float);
+
+    int c_fpclassifyf(float);
+
     bool c_is_nanf(float);
     bool c_is_qnanf(float);
     bool c_is_snanf(float);
@@ -61,6 +62,16 @@ extern "C"{
 
     float c_truncf(float);
 }
+
+/*
+ * These values are the same as the ones in <cmath> / <math.h> because it is already standard.
+ */
+
+#define _fpclass_nan 0x0100
+#define _fpclass_normal 0x0400
+#define _fpclass_infinite (_fpclass_nan | _fpclass_normal)
+#define _fpclass_zero 0x4000
+#define _fpclass_subnormal (_fpclass_normal | _fpclass_zero)
 
 namespace hf_math {
     using ::c_fabsf;
@@ -158,12 +169,12 @@ namespace hf_math {
 
     ///Return a 32-bit positive infinity.
     ///
-    ///For implementation, see implement/f32/implement/f32_functions.cpp.
+    ///For implementation, see implement/f32/implement/f32_util.cpp.
     inline float inf()
         { return c_inff(); }
     ///Return a 32-bit  infinity.
     ///
-    ///For implementation, see implement/f32/implement/f32_functions.cpp.
+    ///For implementation, see implement/f32/implement/f32_util.cpp.
     ///
     ///If the boolean is true, the infinity is negative.
     ///Otherwise, it is positive.
@@ -173,26 +184,26 @@ namespace hf_math {
         { return c_ninff(_n); }
     ///Detect if a given 32-bit value is infinity (either sign).
     ///
-    ///For implementation, see implement/f32/implement/f32_functions.cpp.
+    ///For implementation, see implement/f32/implement/f32_util.cpp.
     ///@param _f The value to be tested for +-inf.
     inline bool is_inf(const float _f)
         { return c_is_inff(_f); }
     ///Detect if a given 32-bit value is negative infinity.
     ///
-    ///For implementation, see implement/f32/implement/f32_functions.cpp.
+    ///For implementation, see implement/f32/implement/f32_util.cpp.
     ///@param _f The value to be tested for -inf.
     inline bool is_n_inf(const float _f)
         { return c_is_ninff(_f); }
     ///Detect if a given 32-bit value is positive infinity.
     ///
-    ///For implementation, see implement/f32/implement/f32_functions.cpp.
+    ///For implementation, see implement/f32/implement/f32_util.cpp.
     ///@param _f The value to be tested for +inf.
     inline bool is_p_inf(const float _f)
         { return c_is_pinff(_f); }
 
     ///Return a 32-bit NaN (Not a Number).
     ///
-    ///For implementation, see implement/f32/implement/f32_functions.cpp.
+    ///For implementation, see implement/f32/implement/f32_util.cpp.
     ///
     ///The message is a base-10 integer recorded in the mantissa of the nan.
     ///The boolean is to signify whether the nan is quiet or signaling.
@@ -203,22 +214,54 @@ namespace hf_math {
 
     ///Detect if a given 32-bit value is NaN (Not a Number, any type).
     ///
-    ///For implementation, see implement/f32/implement/f32_functions.cpp.
+    ///For implementation, see implement/f32/implement/f32_util.cpp.
     ///@param _f The value to be tested for nan.
     inline bool is_nan(const float _f)
         { return c_is_nanf(_f); }
     ///Detect if a given 32-bit value is qNaN (Quiet NaN).
     ///
-    ///For implementation, see implement/f32/implement/f32_functions.cpp.
+    ///For implementation, see implement/f32/implement/f32_util.cpp.
     ///@param _f The value to be tested for qnan.
     inline bool is_qnan(const float _f)
         { return c_is_qnanf(_f); }
     ///Detect if a given 32-bit value is sNaN (Signaling NaN).
     ///
-    ///For implementation, see implement/f32/implement/f32_functions.cpp.
+    ///For implementation, see implement/f32/implement/f32_util.cpp.
     ///@param _f The value to be tested for snan.
     inline bool is_snan(const float _f)
         { return c_is_snanf(_f); }
+
+    ///Detect if a given 32-bit value is finite (not infinite or NaN).
+    ///
+    ///For implementation, see implement/f32/implement/f32_util.cpp.
+    ///@param _f The value to be tested for finiteness
+    inline bool is_finite(const float _f)
+        { return c_is_finitef(_f); }
+
+    ///Detect if a given 32-bit value is normal (Not zero, subnormal, infinite, or NaN).
+    ///
+    ///For implementation, see implement/f32/implement/f32_util.cpp.
+    ///@param _f The value to be tested for normalcy
+    inline bool is_normal(const float _f)
+        { return c_is_normalf(_f); }
+
+    ///Return the sign bit of a 32-bit value _f.
+    ///If _f is positive, the sign bit is zero. Otherwise, it is negative.
+    ///
+    ///For implementation, see implement/f32/implement/f32_util.cpp.
+    ///@param _f The value to extract the sign bit of
+    inline int signbit(const float _f)
+        { return c_signbitf(_f); }
+
+    ///Return a classification value for a 32-bit value _f.
+    ///
+    ///@note The return values do indeed match those of <math.h> and <cmath>.
+    ///
+    ///For implementation, see implement/f32/implement/f32_util.cpp.
+    ///@param _f The value to classify
+    ///@returns 1: _fp_nan, 2: _fp_normal, 3: _fp_infinite, 4: _fp_zero, 5: _fp_subnormal
+    inline int fpclassify(const float _f)
+        { return c_fpclassifyf(_f); }
 
     ///Compute the next 32-bit floating-point value after _x in the direction of _y.
     ///

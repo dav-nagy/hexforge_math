@@ -5,7 +5,7 @@
 #ifndef SNAN_ERR_H
 //Include guard
 #define SNAN_ERR_H
-#include "f32_functions.h"
+#include "f32_util.h"
 
 namespace hexforge_snan_err {
     //Detect if a given 32-bit float _f is a Signaling NaN

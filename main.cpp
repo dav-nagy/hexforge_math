@@ -6,12 +6,10 @@
 #undef SKIP_WARN
 
 #include <chrono>
-#include <cstring>
 #include <random>
 
 #include "math/c_math.h"
 #include "math/implement/f32/internal/f32.h"
-#include "math/implement/f32/internal/numbers.h"
 #include "math/implement/f32/internal/round_mode.h"
 #define MATH_INCLUDE
 #undef MATH_INCLUDE
@@ -57,7 +55,8 @@ namespace evil_memcpy {
 extern "C" float evil_fabsf(float);
 
 int main() {
-    (void) not_main();
+    //(void) not_main();
+    std::cout << (1);
     // std::cout << add64(1, 2) << '\n';
     // std::cout << f32_to_int32(2.75) << '\n';
     // std::cout << int32_to_f32(1076887552) << '\n';

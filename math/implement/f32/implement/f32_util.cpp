@@ -4,14 +4,15 @@
 
 
 #define INTERNAL_CPP
-#include "../internal/f32_functions.h"
-#include "../internal/f32.h"
 #include "../../char/nan_helper.h"
+#include "../internal/f32.h"
+#include "../internal/f32_util.h"
 #undef INTERNAL_CPP
 
 #include "../../attribute/attribute.h"
+#include "../internal/numbers.h"
 
-//Generate a 32-bit positive infinity
+// Generate a 32-bit positive infinity
 extern "C"
     _internal
     float _ieee754_inff() {
@@ -86,6 +87,56 @@ extern "C"
     return (_fx._f_core._exp == 0xff && _fx._f_core._mantissa != 0);
 }
 
+extern "C"
+    _internal
+    bool _ieee754_is_finitef(const float _f) {
+    const _ieee754_f32 _fx(_f);
+    return (_fx._f_core._exp < 255); //Only with an exponent of 255 is inf/nan
+}
+
+extern "C"
+    _internal
+    bool _ieee754_is_normalf(const float _f) {
+    const _ieee754_f32 _fx(_f);
+    return (_fx._f_core._exp < 255 && _fx._f_core._exp > 0);
+}
+
+extern "C"
+    _internal
+    int _ieee754_signbitf(const float _f) {
+    const _ieee754_f32 _fx(_f);
+    return _fx._f_core._sgn;
+}
+
+/*
+ * Return values for fpclassifyf.
+ * These are arbitrary.
+ */
+#define _fp_nan 0x0100
+#define _fp_normal 0x0200
+#define _fp_infinite (_fp_nan | _fp_normal)
+#define _fp_zero 0x4000
+#define _fp_subnormal (_fp_normal | _fp_zero)
+
+extern "C"
+    _internal
+    int _ieee754_fpclassifyf(const float _f) {
+    _ieee754_f32 _fx(_f);
+    _fx._i &= _flt_abs_mask;
+    if (_fx._f_core._exp == 0)
+        return _fx._f_core._mantissa ? _fp_subnormal : _fp_zero;
+    if (_fx._f_core._exp == 255)
+        return _fx._f_core._mantissa ? _fp_nan : _fp_infinite;
+    return _fp_normal;
+}
+
+//Get rid of some macros defiend for the fpclassify function
+#undef _fp_nan
+#undef _fp_normal
+#undef _fp_infinite
+#undef _fp_zero
+#undef _fp_subnormal
+
 //A bunch of _strong_aliases to display this to the .h file for inline wrappers / public API
 
 extern "C"{
@@ -101,4 +152,11 @@ extern "C"{
     _strong_alias(c_is_qnanf, _ieee754_is_qnanf);
     _strong_alias(c_is_snanf, _ieee754_is_snanf);
     _strong_alias(c_is_nanf, _ieee754_is_nanf);
+
+    _strong_alias(c_is_finitef, _ieee754_is_finitef);
+    _strong_alias(c_is_normalf, _ieee754_is_normalf);
+    _strong_alias(c_signbitf, _ieee754_signbitf);
+
+    _strong_alias(c_fpclassifyf, _ieee754_fpclassifyf);
+
 }

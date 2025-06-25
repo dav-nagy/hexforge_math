@@ -15,8 +15,8 @@ add_executable(math main.cpp
         math/implement/char/char.h
         math/implement/char/implement/char.cpp
         math/implement/char/nan_helper.h
-        math/implement/f32/implement/f32_functions.cpp
-        math/implement/f32/internal/f32_functions.h
+        math/implement/f32/implement/f32_util.cpp
+        math/implement/f32/internal/f32_util.h
         math/implement/f32/implement/snan_err.cpp
         math/implement/f32/internal/snan_err.h
         io/input_output/write/implement/str_write.cpp
@@ -59,4 +59,6 @@ add_executable(math main.cpp
         asm.asm
         math/implement/f32/implement/ilogbf.cpp
         math/implement/f32/internal/ilogbf.h
+        math/implement/f32/implement/copysignf.cpp
+        math/implement/f32/internal/copysignf.h
 )

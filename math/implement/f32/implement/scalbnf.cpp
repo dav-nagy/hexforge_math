@@ -35,7 +35,7 @@
 #define INTERNAL_CPP
 #include "../internal/scalbnf.h"
 #include "../internal/f32.h"
-#include "../internal/f32_functions.h"
+#include "../internal/f32_util.h"
 #undef INTERNAL_CPP
 
 #include "../../attribute/attribute.h"

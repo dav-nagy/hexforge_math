@@ -44,34 +44,37 @@
 extern "C"
     _internal
     float _ieee754_scalbnf(const float _x, const int _exp) {
-
     _ieee754_f32 _fx(_x);
-    const unsigned int _sgn = _fx._i & _flt_sgn_mask;
-    _fx._i &= _flt_abs_mask;
+    const unsigned int _sgn = _fx._i & _flt_sgn_mask; //Sign of the result which we add back to |_x| later
+    _fx._i &= _flt_abs_mask; //Discard the sign bit so we can do checks easily
     int _e = _exp;
-    if (_exp == 0 || _fx._i == 0 || _fx._i >= _flt_inf) {
+    if (_exp == 0 || _fx._i == 0 || _fx._i >= _flt_inf) //If _exp == 0 (We are multiplying by 1)
+        //Or if |_x| is zero / inf / NaN, in all these cases we return _x early.
         return _x;
-    }
 
-    const int _r_exp = _fx._f_core._exp + _e;
+    const int _r_exp = _fx._f_core._exp + _e; //This is used for overflow/underflow checks
     //Use a modified version of the MUSL implementation
     //We have overflow/underflow checks to get rid of a bunch of nested if()'s
-    if (_r_exp >= 255) //We catch overflow early so we don't have to go into the crazy statements
-        return c_ninff(_sgn);
+    if (_r_exp >= 255) {
+        //We catch overflow early so we don't have to go into the crazy statements
+        _fx._i = 0x7f800000 | _sgn;
+        return _fx._f;
+    }
     if (_r_exp < -23) { //The result is too small to store even as a subnormal!
         _fx._i = _sgn; //This will create a signed zero
         return _fx._f;
     }
-    if (_e > 127) {
+    if (_e > 127) { //If _e is huge we should scale it down to be sure it fits in the new exponent
         _fx._f *= 0x1p127f;
         _e -= 127;
-    }
-    else if (_e < -126) {
+    } else if (_e < -126) { //Similarly, we scale it up if it is too small.
         _fx._f *= 0x1p-102f; // Equivalent to _fx._f *= 0x1p-126f * 0x1p24f;
-        _e += 102;           // Same deal, equivalent to _e += 126 - 24;
+        _e += 102; // Same deal, equivalent to _e += 126 - 24;
     }
-    const _ieee754_f32 _s((0x7f + _e) << 23);
-    _fx._f *= _s._f;
+    const float _s = _fx._f; //Store the nicely scaled version for multiplication
+    _fx._i = ((0x7f + _e) << 23); //We reuse this union because it is cheap and easy.
+                                  //This is just a power of 2 sith our new exponent inside _fx._f
+    _fx._f *= _s;
     return _fx._f;
 
     /*

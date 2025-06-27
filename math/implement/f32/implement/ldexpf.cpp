@@ -16,6 +16,7 @@
 extern "C"
     _internal
     float _ieee754_ldexpf(const float _x, const int _exp) {
+    //It might be faster to do a _strong_alias, but this wrapper is fine for now.
     return c_scalbnf(_x, _exp);
 }
 

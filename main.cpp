@@ -42,21 +42,22 @@ inline void print_round() {
 
 int not_main();
 
-extern "C" long long add64(long long, long long);
-extern "C" int f32_to_int32(float);
-extern "C" float int32_to_f32(int);
+extern "C" int asm_add(int, int);
+extern "C" int asm_mult(int, int);
+extern "C" float bit_cast_i32_to_f32(int);
 
 #define _int64 long long
-
-namespace evil_memcpy {
-    extern "C" void* evil_memcpy(void *, const void *, unsigned _int64); //Will implement in asm later...
-}
-
-extern "C" float evil_fabsf(float);
+//
+// namespace evil_memcpy {
+//     extern "C" void* evil_memcpy(void *, const void *, unsigned _int64); //Will implement in asm later...
+// }
 
 int main() {
-    //(void) not_main();
-    std::cout << (1);
+    (void) not_main();
+    std::cout << (1) << '\n';
+    std::cout << asm_add(2, 7) << '\n';
+    std::cout << asm_mult(2, 7) << '\n';
+    std::cout << bit_cast_i32_to_f32(23487665) << '\n';
     // std::cout << add64(1, 2) << '\n';
     // std::cout << f32_to_int32(2.75) << '\n';
     // std::cout << int32_to_f32(1076887552) << '\n';

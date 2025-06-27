@@ -5,6 +5,12 @@
 #include "../str_write.h"
 #include "../../ops/cio_out_ops.h"
 
+#if (defined(_WIN32) || defined(_WIN64) || defined(__CYGWIN__))
+    #define _is_windows
+#elif defined(__linux__)
+    #define _is_linux
+#endif
+#ifdef _is_windows
 //Goofy Microsoft Windows magic...
 extern "C" { // Tells the compiler to treat this as C code instead of C++ To avoid function overload
     __declspec(dllimport) void* __stdcall GetStdHandle(unsigned long);
@@ -28,14 +34,21 @@ extern "C" { // Tells the compiler to treat this as C code instead of C++ To avo
  * stdout = -11
  * stderr = -12
  */
+#endif
 
 //Internal function for writing to the console - Use cio_write or io::cio_out << instead
 static void rc_write(const char* _msg) {
-    void* _output_handler = GetStdHandle(STD_OUTPUT_HANDLE);
     unsigned long _str_len = 0, _written;
     while (_msg[_str_len] != '\0')
         _str_len++;
+#ifdef _is_windows
+    void* _output_handler = GetStdHandle(STD_OUTPUT_HANDLE);
     WriteConsoleA(_output_handler, _msg, _str_len, &_written, nullptr);
+#elifdef _is_linux
+    long _ret;
+    (void) _ret;
+#else
+#endif
 }
 
 /*

@@ -5,6 +5,13 @@
 #include "../str_read.h"
 #include "../../ops/cio_out_ops.h"
 
+
+#if (defined(_WIN32) || defined(_WIN64) || defined(__CYGWIN__))
+    #define _is_windows
+#elif defined(__linux__)
+    #define _is_linux
+#endif
+#ifdef _is_windows
 //Silly little Microsoft Windows magic...
 extern "C" { // Tells the compiler to treat this as C code instead of C++ To avoid function overload
     __declspec(dllimport) void* __stdcall GetStdHandle(unsigned long);
@@ -28,12 +35,15 @@ extern "C" { // Tells the compiler to treat this as C code instead of C++ To avo
  * stdout = -11
  * stderr = -12
  */
+#endif
 
 static void rc_read(char* _buf, unsigned long _buf_size) {
-    void* _input_handler = GetStdHandle(STD_INPUT_HANDLE);
     unsigned long _read = 0;
-
+#ifdef _is_windows
+    void* _input_handler = GetStdHandle(STD_INPUT_HANDLE);
     ReadConsoleA(_input_handler, _buf, _buf_size - 1, &_read, nullptr);
+#elif defined(_is_linux)
+#endif
     //Terminate manually because Windows does not do this for you
     _buf[_read] = '\0';
     //Strip possible newline character from 'Enter'

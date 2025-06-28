@@ -36,24 +36,19 @@
     extern "C"
     _internal // Some evil gatekeeping to keep the public API clean
     float _ieee754_truncf(const float _f) {
-//This is not in any namespace as to avoid name mangling (Thanks, C++)
-
     _ieee754_f32 _fx(_f);
-    const unsigned int _sgn = _fx._i & flt_sgn_mask; //Isolate the sign bit, should have 31 trailing zeros
     //Detect subnormal input and all inputs below |+-1.0|
     //We round these all to +-zero, depending on the sign bit
     if (_fx._f_core._exp < flt_exp_bias) {
-        _fx._i = _sgn; //We can do this because subnormal / below-1.0f floats trunc to zero. This leaves only the sign bit.
+        _fx._i &= flt_sgn_mask; //We can do this because subnormal / below-1.0f floats trunc to zero. This leaves only the sign bit.
         return _fx._f;
     }
-    // |_f|
-    _fx._i &= flt_abs_mask; // Mask out the sign bit, easy
     //If |_f| is greater than this, it's an integer, infinity, or NaN
-    if(_fx._i > flt_max_dec_bits) //Bit-representation of floating-point 2^23-ulp (i.e. the largest decimal representable in 32 bits)
+    if(_fx._f_core._exp >= 150)
+        //Smallest number after 2^23-ulp (i.e. the largest decimal representable in 32 bits)
         return _f;
     const unsigned int _e = _fx._f_core._exp - flt_exp_bias; // Subtract Exponent bias (0x07f = 127)
     _fx._f_core._mantissa &= ((1 << (_e + 1)) - 1) << (flt_mant_len /*23*/ - _e); // Mantissa bit mask as implemented above...
-    _fx._i |= _sgn; //Restore the sign bit of _fx
     return _fx._f;
 }
 

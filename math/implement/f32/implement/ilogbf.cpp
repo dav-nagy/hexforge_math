@@ -5,10 +5,10 @@
 #define INTERNAL_CPP
 #include "../internal/ilogbf.h"
 #include "../internal/f32.h"
+#include "../internal/numbers.h"
 #undef INTERNAL_CPP
 
 #include "../../attribute/attribute.h"
-#include "../internal/numbers.h"
 
 /*
  *For nan/zero arguments, it is implementation-defined.
@@ -24,7 +24,7 @@ extern "C"
     _internal
     int _ieee754_ilogbf(const float _f) {
     _ieee754_f32 _fx(_f);
-    _fx._i &= _flt_abs_mask; //Absolute value for zero check
+    _fx._i &= flt_abs_mask; //Absolute value for zero check
     if (_fx._f_core._exp == 255) {//The input is inf/NaN
         return _fx._f_core._sgn ? -_ilogb_inf : _ilogb_inf; //Same as _ilogb_nan. No need for extra ternary operator
     }

@@ -49,7 +49,7 @@ int not_main();
 // }
 
 int main() {
-    (void) not_main();
+    //(void) not_main();
     //float _i;
     //std::cout << hf_math::modf(3.257f, &_i) << ", " << _i << std::endl;
     std::cout << (1) << '\n';
@@ -90,7 +90,7 @@ int not_main() {
         unsigned int _i = dist(gen);
         unsigned int _j = dist(gen);
         unsigned int _k = dist(gen);
-        // _i %= 8388608; //ONly subnormals
+        // _i %= 8388608; //Only subnormals
         float _x = * reinterpret_cast<float *> (&_i),
               _y = * reinterpret_cast<float *> (&_j),
               _z = * reinterpret_cast<float *> (&_k);

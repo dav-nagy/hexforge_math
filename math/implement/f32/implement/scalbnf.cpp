@@ -35,20 +35,19 @@
 #define INTERNAL_CPP
 #include "../internal/scalbnf.h"
 #include "../internal/f32.h"
-#include "../internal/f32_util.h"
+#include "../internal/numbers.h"
 #undef INTERNAL_CPP
 
 #include "../../attribute/attribute.h"
-#include "../internal/numbers.h"
 
 extern "C"
     _internal
     float _ieee754_scalbnf(const float _x, const int _exp) {
     _ieee754_f32 _fx(_x);
-    const unsigned int _sgn = _fx._i & _flt_sgn_mask; //Sign of the result which we add back to |_x| later
-    _fx._i &= _flt_abs_mask; //Discard the sign bit so we can do checks easily
+    const unsigned int _sgn = _fx._i & flt_sgn_mask; //Sign of the result which we add back to |_x| later
+    _fx._i &= flt_abs_mask; //Discard the sign bit so we can do checks easily
     int _e = _exp;
-    if (_exp == 0 || _fx._i == 0 || _fx._i >= _flt_inf) //If _exp == 0 (We are multiplying by 1)
+    if (_exp == 0 || _fx._i == 0 || _fx._i >= flt_inf_bits) //If _exp == 0 (We are multiplying by 1)
         //Or if |_x| is zero / inf / NaN, in all these cases we return _x early.
         return _x;
 

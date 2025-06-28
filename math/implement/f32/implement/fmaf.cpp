@@ -31,11 +31,11 @@ extern "C"
 		_fz(_z);
 	int _scale = 0;
 	//We can skip all the hard scaling work if these conditions are not met (i.e. the floats are safe to work with)
-	if (_fx._f_core._exp + _fy._f_core._exp >= 0xff + _flt_exp_bias - _flt_mant_len || //_x * _y will overflow(either now or in scaling)
-		_fx._f_core._exp >= 0xff - _flt_mant_len || //_x is very large
-		_fy._f_core._exp >= 0xff - _flt_mant_len || //_y is very large
-		_fz._f_core._exp >= 0xff - _flt_mant_len || //_z is very large
-		_fx._f_core._exp + _fy._f_core._exp <= _flt_exp_bias + _flt_mant_len) { //_x * _y is very small (Might underflow to zero)
+	if (_fx._f_core._exp + _fy._f_core._exp >= 0xff + flt_exp_bias - flt_mant_len || //_x * _y will overflow(either now or in scaling)
+		_fx._f_core._exp >= 0xff - flt_mant_len || //_x is very large
+		_fy._f_core._exp >= 0xff - flt_mant_len || //_y is very large
+		_fz._f_core._exp >= 0xff - flt_mant_len || //_z is very large
+		_fx._f_core._exp + _fy._f_core._exp <= flt_exp_bias + flt_mant_len) { //_x * _y is very small (Might underflow to zero)
 		//I don't even think it is possible to practically makes these czechs branchless...
 
 		//I don't know why like half of these work because I stole them all from glibc's implementation...
@@ -56,14 +56,14 @@ extern "C"
 			_x == 0.0f || _y == 0.0f)
 			return _x * _y + _z;
 		//This is when fmaf() will certainly overflow (We can just return _x * _y)
-		if (_fx._f_core._exp + _fy._f_core._exp > 0xff /*255*/ + _flt_exp_bias)
+		if (_fx._f_core._exp + _fy._f_core._exp > 0xff /*255*/ + flt_exp_bias)
 			return _x * _y;
 
-		//This results in an exponent of -25 (- 127), so 1/4 of _flt_sub_epsilon
+		//This results in an exponent of -25 (- 127), so 1/4 of flt_sub_epsilon
 		//Now, only the sign of the result matters...
-		if (_fx._f_core._exp + _fy._f_core._exp < (_flt_exp_bias - _flt_mant_len - 2)) {
+		if (_fx._f_core._exp + _fy._f_core._exp < (flt_exp_bias - flt_mant_len - 2)) {
 			const bool _n = _fx._f_core._sgn ^ _fy._f_core._sgn;
-			const float _tiny = _n? -_flt_sub_epsilon : _flt_sub_epsilon;
+			const float _tiny = _n? -flt_sub_epsilon : flt_sub_epsilon;
 			if (_fz._f_core._exp >= 2) //Numbers larger than or as large as this will not be affected by adding _tiny
 				return _tiny + _z;
 			//Scale up _z, then add _tiny before scaling down (Forces inexact and underflow)
@@ -76,66 +76,66 @@ extern "C"
 			return _fz._f * 0x1p-25f;
 		}
 
-		if (_fx._f_core._exp + _fy._f_core._exp >= 0xff + _flt_exp_bias - _flt_mant_len) {
+		if (_fx._f_core._exp + _fy._f_core._exp >= 0xff + flt_exp_bias - flt_mant_len) {
 			// _x * _y Dangerously close to overflowing
 			//Compute the result * 2^-23 and scale back afterward
 			if (_fx._f_core._exp > _fy._f_core._exp)
-				_fx._f_core._exp -= _flt_mant_len;
+				_fx._f_core._exp -= flt_mant_len;
 			else
-				_fy._f_core._exp -= _flt_mant_len;
+				_fy._f_core._exp -= flt_mant_len;
 			//If _z's exponent is small we need not scale it down
 			//This is because if _z is too small then it's so tiny anyway that it gets swallowed by _x * _y
 			//So we don't need to scale it down because that's useless
-			if (_fz._f_core._exp > _flt_mant_len)
-				_fz._f_core._exp -= _flt_mant_len;
+			if (_fz._f_core._exp > flt_mant_len)
+				_fz._f_core._exp -= flt_mant_len;
 			_scale = 1;
 		}
-		else if (_fz._f_core._exp >= 0xff - _flt_mant_len) { //_z is very large
+		else if (_fz._f_core._exp >= 0xff - flt_mant_len) { //_z is very large
 			//If _x and _y exponents are rather small
 			//We adjust either _x's or _y's exponents to help
 			if (_fx._f_core._exp + _fy._f_core._exp <=
-				_flt_exp_bias + 2 * _flt_mant_len) { //Increase exponent of _x or _y so it is not swallowed by _z
+				flt_exp_bias + 2 * flt_mant_len) { //Increase exponent of _x or _y so it is not swallowed by _z
 				if (_fx._f_core._exp > _fy._f_core._exp)
-					_fx._f_core._exp += 2 * _flt_mant_len + 2;
+					_fx._f_core._exp += 2 * flt_mant_len + 2;
 				else
-					_fy._f_core._exp += 2 * _flt_mant_len + 2;
+					_fy._f_core._exp += 2 * flt_mant_len + 2;
 				}
 			else if (_fx._f_core._exp > _fy._f_core._exp) {
-				if (_fx._f_core._exp > _flt_mant_len)
-					_fx._f_core._exp -= _flt_mant_len;
+				if (_fx._f_core._exp > flt_mant_len)
+					_fx._f_core._exp -= flt_mant_len;
 			}
-			else if (_fy._f_core._exp > _flt_mant_len)
-				_fy._f_core._exp -= _flt_mant_len;
+			else if (_fy._f_core._exp > flt_mant_len)
+				_fy._f_core._exp -= flt_mant_len;
 			//Scale down _z in the same way to maintain accuracy with computations
-				_fz._f_core._exp -= _flt_mant_len;
+				_fz._f_core._exp -= flt_mant_len;
 			_scale = 1;
 		}
-		else if (_fx._f_core._exp >= -0xff - _flt_mant_len) { //_x only is very large
+		else if (_fx._f_core._exp >= -0xff - flt_mant_len) { //_x only is very large
 			//This can be fixed easily by scaling down _x and scaling up _y
-			_fx._f_core._exp -= _flt_mant_len;
+			_fx._f_core._exp -= flt_mant_len;
 			if (_fy._f_core._exp) //_y is normal
-				_fy._f_core._exp += _flt_mant_len;
+				_fy._f_core._exp += flt_mant_len;
 			else
 				_fy._f *= 0x1p+23;
 		}
-		else if (_fy._f_core._exp >= -0xff - _flt_mant_len) { //_y only is very large
+		else if (_fy._f_core._exp >= -0xff - flt_mant_len) { //_y only is very large
 			//This can be fixed easily by scaling down _y and scaling up _x
 			//Mirror of previous case
-			_fy._f_core._exp -= _flt_mant_len;
+			_fy._f_core._exp -= flt_mant_len;
 			if (_fx._f_core._exp) //_x is normal
-				_fx._f_core._exp += _flt_mant_len;
+				_fx._f_core._exp += flt_mant_len;
 			else
 				_fx._f *= 0x1p+23;
 		}
-		else if (_fx._f_core._exp + _fy._f_core._exp <= _flt_exp_bias + _flt_mant_len) {
+		else if (_fx._f_core._exp + _fy._f_core._exp <= flt_exp_bias + flt_mant_len) {
 			if (_fx._f_core._exp > _fy._f_core._exp)
-				_fx._f_core._exp += 2 * _flt_mant_len + 2; //48
+				_fx._f_core._exp += 2 * flt_mant_len + 2; //48
 			else
-				_fy._f_core._exp += 2 * _flt_mant_len + 2; //48
-			if (_fz._f_core._exp <= 4 * _flt_mant_len + 6) { //94 - Probably just heuristic
+				_fy._f_core._exp += 2 * flt_mant_len + 2; //48
+			if (_fz._f_core._exp <= 4 * flt_mant_len + 6) { //94 - Probably just heuristic
 															 //IDK I stole it from glibc anyway
 				if (_fz._f_core._exp) //_z is normal
-					_fz._f_core._exp += 2 * _flt_mant_len + 2; //48
+					_fz._f_core._exp += 2 * flt_mant_len + 2; //48
 				else
 					_fz._f *= 0x1p+48;
 				_scale = -1;
@@ -156,7 +156,7 @@ extern "C"
 
 	//Multiplication of _rh + _rl = _x * _y through Dekker's multiplying algorithm
 #define _c 4097 // Constant used for Dekker splitting.
-				// = ((1 << (_flt_mant_len + 1) / 2) + 1)
+				// = ((1 << (flt_mant_len + 1) / 2) + 1)
 	//Apparently 13 does not work!
 	float _xh = _ix * _c;
 	float _yh = _iy * _c;

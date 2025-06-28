@@ -34,10 +34,10 @@
 #define INTERNAL_CPP
 #include "../internal/modff.h"
 #include "../internal/f32.h"
+#include "../internal/numbers.h"
 #undef INTERNAL_CPP
 
 #include "../../attribute/attribute.h"
-#include "../internal/numbers.h"
 
 extern "C"
     _internal
@@ -51,17 +51,17 @@ extern "C"
         }
         //+-inf
         *_iptr = _fx._f; //*_iptr holds the infinite part, while we return zero.
-        _fx._i &= _flt_sgn_mask; //Get a signed zero.
+        _fx._i &= flt_sgn_mask; //Get a signed zero.
         return _fx._f;
     }
-    const unsigned int _sgn = _fx._i & _flt_sgn_mask;
+    const unsigned int _sgn = _fx._i & flt_sgn_mask;
     //All inputs less than one. This also covers zero
-    if (_fx._f_core._exp < _flt_exp_bias) {
+    if (_fx._f_core._exp < flt_exp_bias) {
         _fx._i = _sgn; //Create a signed zero
         *_iptr = _fx._f;
         return _f;
     }
-    if (_fx._f_core._exp >= 23 + _flt_exp_bias) { //After this number, all floats are integral.
+    if (_fx._f_core._exp >= 23 + flt_exp_bias) { //After this number, all floats are integral.
         //This is the largest float with a fractional part.
         *_iptr = _fx._f; //The signed input goes in here
         _fx._i = _sgn; //Create a signed zero
@@ -69,9 +69,9 @@ extern "C"
     }
     //All the special cases have now been accounted fore
     //Now we truncate the value and store it in *_iptr.
-    const unsigned int _e = _fx._f_core._exp - _flt_exp_bias; //Unbiased exponent
+    const unsigned int _e = _fx._f_core._exp - flt_exp_bias; //Unbiased exponent
     //The mask below clears all the fractional bits from the mantissa with some neat math.
-    _fx._f_core._mantissa &= ((1 << (_e + 1)) - 1) << (_flt_mant_len - _e); //See truncf() impl.
+    _fx._f_core._mantissa &= ((1 << (_e + 1)) - 1) << (flt_mant_len - _e); //See truncf() impl.
     _fx._i |= _sgn;
     *_iptr = _fx._f; //*_iptr now holds the truncated value of _f.
     //Before we return _f - _fx._f, if _f was integral, subtracting these will create a zero.

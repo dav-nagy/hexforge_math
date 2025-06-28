@@ -7,10 +7,10 @@
 #include "../../char/nan_helper.h"
 #include "../internal/f32.h"
 #include "../internal/f32_util.h"
+#include "../internal/numbers.h"
 #undef INTERNAL_CPP
 
 #include "../../attribute/attribute.h"
-#include "../internal/numbers.h"
 
 // Generate a 32-bit positive infinity
 extern "C"
@@ -122,7 +122,7 @@ extern "C"
     _internal
     int _ieee754_fpclassifyf(const float _f) {
     _ieee754_f32 _fx(_f);
-    _fx._i &= _flt_abs_mask;
+    _fx._i &= flt_abs_mask;
     if (_fx._f_core._exp == 0)
         return _fx._f_core._mantissa ? _fp_subnormal : _fp_zero;
     if (_fx._f_core._exp == 255)

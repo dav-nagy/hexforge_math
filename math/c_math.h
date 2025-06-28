@@ -21,60 +21,46 @@
 
 #include "implement/f32/internal/radix.h"
 
-#ifdef NO_INCLUDE
-    #error Something was included that should not have been.
-#endif
+/*
+ * These values are the same as the ones in glibc's <cmath> / <math.h> because it is already standard.
+ */
 
+#define _fpclass_nan (0x0100)
+#define _fpclass_normal (0x0400)
+#define _fpclass_infinite (_fpclass_nan | _fpclass_normal)
+#define _fpclass_zero (0x4000)
+#define _fpclass_subnormal (_fpclass_normal | _fpclass_zero)
+
+//These are all the aliased internal functions which we can nicely wrap later.
+//Some of these will have x64 asm versions in the future, which you can toggle
+//  with a #define.
 extern "C"{
     float c_copysignf(float, float);
-
     float c_fabsf(float);
-
     float c_fmaf(float, float, float);
-
+    float c_fmaxf(float, float);
+    float c_fminf(float, float);
     float c_frexpf(float, int*);
-
     int c_ilogbf(float);
-
     float c_ldexpf(float, int);
-
     float c_modff(float, float*);
-
     float c_scalbnf(float, int);
-
     float c_inff();
     float c_ninff(bool);
-
     bool c_is_inff(float);
     bool c_is_ninff(float);
     bool c_is_pinff(float);
-
     bool c_is_finitef(float);
     bool c_is_normalf(float);
     int c_signbitf(float);
-
     int c_fpclassifyf(float);
-
     bool c_is_nanf(float);
     bool c_is_qnanf(float);
     bool c_is_snanf(float);
-
     float c_nextafterf(float, float);
-
     float c_nanf(const char*, bool);
-
     float c_truncf(float);
 }
-
-/*
- * These values are the same as the ones in <cmath> / <math.h> because it is already standard.
- */
-
-#define _fpclass_nan 0x0100
-#define _fpclass_normal 0x0400
-#define _fpclass_infinite (_fpclass_nan | _fpclass_normal)
-#define _fpclass_zero 0x4000
-#define _fpclass_subnormal (_fpclass_normal | _fpclass_zero)
 
 namespace hf_math {
     using ::c_copysignf;
@@ -106,6 +92,26 @@ namespace hf_math {
     ///@param _z The independent summand, the other one being the product of _x and _y.
     inline float fma(const float _x, const float _y, const float _z)
     { return c_fmaf(_x, _y, _z); }
+
+    using ::c_fmaxf;
+
+    ///Return the larger of _x and _y.
+    ///
+    ///For implementation, see implement/f32/implement/fmaxf.cpp.
+    ///@param _x The first floating-point value.
+    ///@param _y The second floating-point value.
+    inline float fmax(const float _x, const float _y)
+        { return c_fmaxf(_x, _y); }
+
+    using ::c_fminf;
+
+    ///Return the smaller of _x and _y.
+    ///
+    ///For implementation, see implement/f32/implement/fminf.cpp
+    ///@param _x The first floating-point value.
+    ///@param _y The second floating-point value.
+    inline float fmin(const float _x, const float _y)
+        { return c_fminf(_x, _y); }
 
     using ::c_frexpf;
 

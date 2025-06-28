@@ -62,4 +62,6 @@ add_executable(math main.cpp
         main.cpp
         math/implement/f32/implement/modff.cpp
         math/implement/f32/internal/modff.h
+        math/implement/f32/implement/fmaxf.cpp
+        math/implement/f32/internal/fmaxf.h
 )

@@ -6,22 +6,22 @@
 #define INTERNAL_CPP
 #include "../internal/frexpf.h"
 #include "../internal/f32.h"
+#include "../internal/numbers.h"
 #undef INTERNAL_CPP
 
 #include "../../attribute/attribute.h"
-#include "../internal/numbers.h"
 
 extern "C"
     _internal
     float _ieee754_frexpf(const float _x, int* _exp) {
     _ieee754_f32 _ix(_x);
     //Sign bit of _x shorted 31 places so it is nicely lined up with the floating-point format
-    const unsigned int _sgn = _ix._i & _flt_sgn_mask;
+    const unsigned int _sgn = _ix._i & flt_sgn_mask;
     //|_x|
-    _ix._i &= _flt_abs_mask; //We need to do this for special case detections; the sign will be restored later
+    _ix._i &= flt_abs_mask; //We need to do this for special case detections; the sign will be restored later
     *_exp = 0;
     //_x is +-inf/NaN/zero, we can return the value directly
-    if (_ix._i >= _flt_inf || _ix._i == 0)
+    if (_ix._i >= flt_inf_bits || _ix._i == 0)
         return _x;
     if (_ix._f_core._exp == 0) { //Subnormal _x
         *_exp -= 25; //Scale down exponent because algebra

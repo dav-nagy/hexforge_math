@@ -59,9 +59,9 @@ extern "C"
     if (_fx._f_core._exp < _flt_exp_bias) {
         _fx._i = _sgn; //Create a signed zero
         *_iptr = _fx._f;
-        return _fx._f;
+        return _f;
     }
-    if (_fx._i > _flt_max_dec_bits) {
+    if (_fx._f_core._exp >= 23 + _flt_exp_bias) { //After this number, all floats are integral.
         //This is the largest float with a fractional part.
         *_iptr = _fx._f; //The signed input goes in here
         _fx._i = _sgn; //Create a signed zero
@@ -74,7 +74,11 @@ extern "C"
     _fx._f_core._mantissa &= ((1 << (_e + 1)) - 1) << (_flt_mant_len - _e); //See truncf() impl.
     _fx._i |= _sgn;
     *_iptr = _fx._f; //*_iptr now holds the truncated value of _f.
-    return (_f - _fx._f); //Guaranteed exact via the Sterbenz Lemma.
+    //Before we return _f - _fx._f, if _f was integral, subtracting these will create a zero.
+    //However, it will be a positive zero! We must make sure that does not happen.
+     _fx._f = _f - _fx._f; //Guaranteed exact via the Sterbenz Lemma.
+     _fx._i |= _sgn; //Restore sign in possible zero
+    return _fx._f;
 }
 
 extern "C"

@@ -26,6 +26,8 @@
 #endif
 
 extern "C"{
+    float c_copysignf(float, float);
+
     float c_fabsf(float);
 
     float c_fmaf(float, float, float);
@@ -75,6 +77,16 @@ extern "C"{
 #define _fpclass_subnormal (_fpclass_normal | _fpclass_zero)
 
 namespace hf_math {
+    using ::c_copysignf;
+
+    ///Return _x with the sign of _y.
+    ///
+    ///For implementation, see implement/f32/implement/copysignf.cpp.
+    ///@param _x The value to return with modified sign.
+    ///@param _y The value whose sign to apply to _x.
+    inline float copysign(const float _x, const float _y)
+        { return c_copysignf(_x, _y); }
+
     using ::c_fabsf;
 
     ///Return the absolute value of _f (i.e. |_f|).

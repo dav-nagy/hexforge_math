@@ -33,7 +33,8 @@
 
 ///Return the smallest integral value smaller than a 32-bit floating point number _f (Rounding towards zero)
 ///@param _f 32-bit floating-point number to round towards zero
-    extern "C" _internal // Some evil gatekeeping to keep the public API clean
+    extern "C"
+    _internal // Some evil gatekeeping to keep the public API clean
     float _ieee754_truncf(const float _f) {
 //This is not in any namespace as to avoid name mangling (Thanks, C++)
 

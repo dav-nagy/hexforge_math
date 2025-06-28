@@ -37,6 +37,7 @@
 extern "C"{
     float c_copysignf(float, float);
     float c_fabsf(float);
+    float c_floorf(float);
     float c_fmaf(float, float, float);
     float c_fmaxf(float, float);
     float c_fminf(float, float);
@@ -81,6 +82,15 @@ namespace hf_math {
     ///@param _f The number to take the absolute value of.
     inline float fabs(const float _f)
     { return c_fabsf(_f); }
+
+    using ::c_floorf;
+
+    ///Return _x rounded to the nearby integer toward -inf.
+    ///
+    ///For implementatoin, see implement/f32/implement/floorf.cpp.
+    ///@param _f The number to floor.
+    inline float floor(const float _f)
+        { return c_floorf(_f); }
 
     using ::c_fmaf;
 

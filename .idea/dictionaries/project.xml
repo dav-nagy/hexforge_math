@@ -12,6 +12,7 @@
       <w>ldexp</w>
       <w>ldexpf</w>
       <w>mant</w>
+      <w>modff</w>
       <w>nanf</w>
       <w>nextafter</w>
       <w>nextafterf</w>

@@ -3,7 +3,6 @@
 //
 
 /*TODO:
- * modff
  * roundf
  * floorf
  * ceilf
@@ -36,6 +35,8 @@ extern "C"{
     int c_ilogbf(float);
 
     float c_ldexpf(float, int);
+
+    float c_modff(float, float*);
 
     float c_scalbnf(float, int);
 
@@ -146,9 +147,17 @@ namespace hf_math {
     inline float scalbn(const float _f, const int _exp)
         { return c_scalbnf(_f, _exp); }
 
+    using ::c_modff;
+
+    ///Return the fractional part of _f, storing the integral part in *_iptr.
+    ///
+    ///For implementation, see implement/f32/implement/modff.cpp
+    ///@param _f The value to get the integral/fractional parts of.
+    ///@param _iptr A pointer to where the integral part of _f will be stored
+    inline float modf(const float _f, float* _iptr)
+        { return c_modff(_f, _iptr); }
+
     using ::c_inff;
-
-
 
     using ::c_ninff;
 

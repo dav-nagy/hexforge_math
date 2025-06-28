@@ -14,4 +14,4 @@
 extern "C"
         float c_frexpf(float, int*);
 
-#endif //FREXP_H
+#endif //FREXPF_H

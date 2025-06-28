@@ -60,4 +60,6 @@ add_executable(math main.cpp
         math/implement/f32/implement/copysignf.cpp
         math/implement/f32/internal/copysignf.h
         main.cpp
+        math/implement/f32/implement/modff.cpp
+        math/implement/f32/internal/modff.h
 )

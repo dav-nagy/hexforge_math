@@ -6,21 +6,22 @@
 //Include guard
 #define ATTRIBUTE_H
 
-//Let the linker know that symbol _n is equivalent to _an
-//(You likely will not know unless you are delving into this source code)
-
+//This _strong_alias does not account for name mangling. Always wrap it with extern "C".
 #define _strong_alias(_an, _n) \
-    extern "C" __typeof(_n) _an __attribute__(( alias(#_n) ))
+    __typeof(_n) _an __attribute__(( alias(#_n) ))
+//This _weak_alias does not account for name mangling. Always wrap it with extern "C".
 #define _weak_alias(_an, _n) \
-    extern "C" __typeof(_n) _an __attribute__(( weak, alias(#_n) ))
+    __typeof(_n) _an __attribute__(( weak, alias(#_n) ))
 //This library is for C++ ONLY (So, no need to #ifdef __cplusplus)
 
 #ifdef __ELF__ //Linux and other ELF systems
+    //This _internal does not account for name mangling. Always wrap it with extern "C".
     #define _internal \
-    extern "C" __attribute__((visibility("hidden")))
+        __attribute__((visibility("hidden")))
     #define _export //Useless
 #else //For Windows
     #define _internal \
+        //This _strong_alias does not account for name mangling. Always wrap it with extern "C".
         __declspec(dllexport)
 //^^^Might be useless...
 

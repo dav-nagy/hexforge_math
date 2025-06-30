@@ -35,6 +35,7 @@
 //Some of these will have x64 asm versions in the future, which you can toggle
 //  with a #define.
 extern "C"{
+    float c_ceilf(float);
     float c_copysignf(float, float);
     float c_fabsf(float);
     float c_floorf(float);
@@ -59,11 +60,21 @@ extern "C"{
     bool c_is_qnanf(float);
     bool c_is_snanf(float);
     float c_nextafterf(float, float);
+    float c_roundf(float);
     float c_nanf(const char*, bool);
     float c_truncf(float);
 }
 
 namespace hf_math {
+    using ::c_ceilf;
+
+    ///Return _x rounded to the nearby integer toward inf.
+    ///
+    ///For implementatoin, see implement/f32/implement/ceilf.cpp.
+    ///@param _f The number to round toward inf.
+    inline float ceil(const float _f)
+        { return c_ceilf(_f); }
+
     using ::c_copysignf;
 
     ///Return _x with the sign of _y.
@@ -88,7 +99,7 @@ namespace hf_math {
     ///Return _x rounded to the nearby integer toward -inf.
     ///
     ///For implementatoin, see implement/f32/implement/floorf.cpp.
-    ///@param _f The number to floor.
+    ///@param _f The number to round toward -inf.
     inline float floor(const float _f)
         { return c_floorf(_f); }
 
@@ -308,6 +319,11 @@ namespace hf_math {
     ///(*Direction as seen on a number line).
     inline float nextafter(const float _x, const float _y)
         { return c_nextafterf(_x, _y); }
+
+    using ::c_roundf;
+
+    inline float round(const float _f)
+        { return c_roundf(_f); }
 
     ///Return the largest integral value that is smaller in magnitude than _f.
     ///(i.e. round _f toward zero)

@@ -2,13 +2,6 @@
 // Created by David on 6/3/2025.
 //
 
-/*TODO:
- * roundf
- * floorf
- * ceilf
- * nearbyintf
- */
-
 #ifndef C_MATH_H
 //Include Guard
 #define C_MATH_H
@@ -19,6 +12,7 @@
 
 #define C_MATH_INCLUDE
 
+//Radix error that will likely be removed in the github release
 #include "implement/f32/internal/radix.h"
 
 /*
@@ -60,11 +54,13 @@ extern "C"{
     bool c_is_qnanf(float);
     bool c_is_snanf(float);
     float c_nextafterf(float, float);
+    float c_rintf(float);
     float c_roundf(float);
     float c_nanf(const char*, bool);
     float c_truncf(float);
 }
 
+#ifdef __cplusplus
 namespace hf_math {
     using ::c_ceilf;
 
@@ -320,8 +316,21 @@ namespace hf_math {
     inline float nextafter(const float _x, const float _y)
         { return c_nextafterf(_x, _y); }
 
+    using ::c_rintf;
+
+    ///Return _f rounded to the nearest integer according to the current rounding mode.
+    ///
+    ///For implementation, see implement/f32/implement/rintf.cpp
+    ///@param _f The value to be rounded
+    inline float rint(const float _f)
+        { return c_rintf(_f); }
+
     using ::c_roundf;
 
+    ///Return _f rounded to the nearest integer, tying away from zero.
+    ///
+    ///For implementation, see implement/f32/implement/roundf.cpp
+    ///@param _f The value to be rounded
     inline float round(const float _f)
         { return c_roundf(_f); }
 
@@ -333,6 +342,10 @@ namespace hf_math {
     inline float trunc(const float _f)
         { return c_truncf(_f); }
 }
+#else
+#define fabsf c_fabsf
+... (more functions)
+#endif
 
 #undef C_MATH_INCLUDE
 

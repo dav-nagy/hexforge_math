@@ -12,7 +12,7 @@
 
 #define C_MATH_INCLUDE
 
-//Radix error that will likely be removed in the github release
+//Radix error that will likely be removed in the GitHub release
 #include "implement/f32/internal/radix.h"
 
 /*
@@ -57,6 +57,7 @@ extern "C"{
     float c_rintf(float);
     float c_roundf(float);
     float c_nanf(const char*, bool);
+    float c_sqrtf(float);
     float c_truncf(float);
 }
 
@@ -329,10 +330,19 @@ namespace hf_math {
 
     ///Return _f rounded to the nearest integer, tying away from zero.
     ///
-    ///For implementation, see implement/f32/implement/roundf.cpp
-    ///@param _f The value to be rounded
+    ///For implementation, see implement/f32/implement/roundf.cpp.
+    ///@param _f The value to be rounded.
     inline float round(const float _f)
         { return c_roundf(_f); }
+
+    using ::c_sqrtf;
+
+    ///Return the square root of _f.
+    ///
+    ///For implementation, see implement/f32/implement/sqrtf.cpp.
+    ///@param _f The value to take the square root of.
+    inline float sqrt(const float _f)
+        { return c_sqrtf(_f); }
 
     ///Return the largest integral value that is smaller in magnitude than _f.
     ///(i.e. round _f toward zero)

@@ -2,16 +2,16 @@
 // Created by David on 6/28/2025.
 //
 
-#ifndef FMAXF_H
+#ifndef FMINF_H
 //Include guard
-#define FMAXF_H
+#define FMINF_H
 
 #if !defined(MATH_INCLUDE) && !defined(INTERNAL_CPP)
         //Stop people from directly including this file unless they Know how...
-        #error Do not include fmaxf.h directly. Use "c_math.h" instead.
+        #error Do not include fminf.h directly. Use "c_math.h" instead.
 #endif
 
 extern "C"
-        float c_fmaxf(float, float);
+        float c_fminf(float, float);
 
-#endif //FMAX_H
+#endif //FMINF_H

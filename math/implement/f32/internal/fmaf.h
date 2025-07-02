@@ -14,7 +14,4 @@
 extern "C"
         float c_fmaf(float, float, float);
 
-// inline float c_fmaf(const float _x, const float _y, const float _z)
-//         { return _c_fmaf(_x, _y, _z); }
-
 #endif //FMAF_H

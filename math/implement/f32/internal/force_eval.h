@@ -8,7 +8,7 @@
 
 #if !defined(MATH_INCLUDE) && !defined(INTERNAL_CPP)
         //Stop people from directly including this file unless they Know how...
-        #error Do not include fabsf.h directly. Use "c_math.h" instead.
+        #error Do not include force_eval.h directly. Use "c_math.h" instead.
 #endif
 
 ///Force the evaluation of _x, even if it looks useless.

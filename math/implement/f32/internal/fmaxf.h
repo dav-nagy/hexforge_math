@@ -14,4 +14,4 @@
 extern "C"
         float c_fmaxf(float, float);
 
-#endif //FMAX_H
+#endif //FMAXF_H

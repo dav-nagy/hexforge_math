@@ -5,9 +5,8 @@
 #ifndef ROUND_MODE_H
 //Include guard
 #define ROUND_MODE_H
-#include "../../attribute/attribute.h"
 
-//Rounding mode detection functions modified from the LLVM project
+// Rounding mode detection functions modified from the LLVM project
 //https://github.com/llvm/llvm-project/blob/main/libc/src/__support/FPUtil/rounding_mode.h
 
 //Check if the rounding mode == FE_UPWARD

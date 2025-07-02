@@ -14,7 +14,4 @@
 extern "C"
         float c_truncf(float);
 
-// inline float c_truncf(const float _f)
-//         { return _c_truncf(_f); }
-
 #endif //TRUNCF_H

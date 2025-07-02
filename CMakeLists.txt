@@ -51,7 +51,7 @@ add_executable(math main.cpp
         math/implement/f32/internal/frexpf.h
         math/implement/f32/implement/scalbnf.cpp
         math/implement/f32/internal/scalbnf.h
-        math/implement/f32/internal/round_mode.h
+        math/implement/round_mode.h
         math/implement/f32/implement/ldexpf.cpp
         math/implement/f32/internal/ldexpf.h
         math/implement/f32/internal/radix.h
@@ -64,10 +64,17 @@ add_executable(math main.cpp
         math/implement/f32/internal/modff.h
         math/implement/f32/implement/fmaxf.cpp
         math/implement/f32/internal/fmaxf.h
+        math/implement/f32/implement/fminf.cpp
+        math/implement/f32/internal/fminf.h
         math/implement/f32/implement/floorf.cpp
         math/implement/f32/internal/floorf.h
         math/implement/f32/implement/ceilf.cpp
         math/implement/f32/internal/ceilf.h
         math/implement/f32/implement/roundf.cpp
         math/implement/f32/internal/roundf.h
+        math/implement/f32/implement/rintf.cpp
+        math/implement/f32/internal/rintf.h
+        math/implement/f32/implement/sqrtf.cpp
+        math/implement/f32/internal/sqrtf.h
+
 )

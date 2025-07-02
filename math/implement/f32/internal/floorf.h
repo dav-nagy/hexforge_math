@@ -2,9 +2,9 @@
 // Created by wizard on 6/28/2025.
 //
 
-#ifndef TRUNCF_H
+#ifndef FLOORF_H
 //Include guard
-#define TRUNCF_H
+#define FLOORF_H
 
 #if !defined(MATH_INCLUDE) && !defined(INTERNAL_CPP)
         //Stop people from directly including this file unless they Know how...
@@ -14,7 +14,4 @@
 extern "C"
         float c_floorf(float);
 
-// inline float c_truncf(const float _f)
-//         { return _c_truncf(_f); }
-
-#endif //TRUNCF_H
+#endif //FLOORF_H

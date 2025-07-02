@@ -2,9 +2,9 @@
 // Created by wizard on 6/28/2025.
 //
 
-#ifndef TRUNCF_H
+#ifndef CEILF_H
 //Include guard
-#define TRUNCF_H
+#define CEILF_H
 
 #if !defined(MATH_INCLUDE) && !defined(INTERNAL_CPP)
         //Stop people from directly including this file unless they Know how...
@@ -14,4 +14,4 @@
 extern "C"
         float c_ceilf(float);
 
-#endif //TRUNCF_H
+#endif //CEILF_H

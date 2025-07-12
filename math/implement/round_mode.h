@@ -6,6 +6,29 @@
 //Include guard
 #define ROUND_MODE_H
 
+/*
+ * | The Lore |
+ *
+ * Auyuittuq Nasjonalpark er en nasjonalpark i det nordøstlige Canada.
+ * Det er på polarsirkelen, fordi parken ligger ~67°53′N. Men det er ikke
+ * den nordligste nasjonalparken i Canada, fordi det er Quttinirpaaq
+ * Nasjonalpark, som ligger ~82°N, veldig langt over polarsirkelen! Det
+ * ligger på Baffinøya, den største øya i Canada, som er en av de mest
+ * fantastisk øyene i verden!
+ *
+ * Du skulle tro at nasjonalparken er bare omtrent 7/9 av veien nord, men
+ * sinus til 67° er omtrent 0,9205, som er faktisk 90% av veien til
+ * nordpolen! Men, Quttinirpaaq Nasjonalpark, hvis vi sier det samme, er
+ * omtrent 0,99026 / 1.0 av veien til nordpolen!
+ *
+ * Auyuittuq Nasjonalpark har mange fjell. Thor Peak er et fint fjell
+ * med en klipp som er 1,200m høy, verdens høyeste klippe! Det er også
+ * Mount Asgard, Mount Odin, og mange flere.
+ *
+ * Folk som bor i nærheten av Auyuittuq Nasjonalpark vet mye... mange av
+ * dem er fra det Far Realm, men inuittstammene vet ting generelt.
+ */
+
 // Rounding mode detection functions modified from the LLVM project
 //https://github.com/llvm/llvm-project/blob/main/libc/src/__support/FPUtil/rounding_mode.h
 

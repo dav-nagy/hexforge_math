@@ -25,6 +25,17 @@
 #define _fpclass_zero (0x4000)
 #define _fpclass_subnormal (_fpclass_normal | _fpclass_zero)
 
+/*
+ * Get rid of some macros in internal rounding mode detection that we don't want leaking out
+ */
+
+#undef _round_up
+#undef _round_down
+#undef _round_nearest
+#undef _round_zero
+
+#undef _rounding_mode
+
 //These are all the aliased internal functions which we can nicely wrap later.
 //Some of these will have x64 asm versions in the future, which you can toggle
 //  with a #define.

@@ -76,5 +76,7 @@ add_executable(math main.cpp
         math/implement/f32/internal/rintf.h
         math/implement/f32/implement/sqrtf.cpp
         math/implement/f32/internal/sqrtf.h
+        math/implement/f32/implement/cbrtf.cpp
+        math/implement/f32/internal/cbrtf.h
 
 )

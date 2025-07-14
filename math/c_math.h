@@ -33,52 +33,63 @@
 #undef _round_down
 #undef _round_nearest
 #undef _round_zero
-
+///
 #undef _rounding_mode
+
+#define _inff (union{float f; int i;} _x{i = 0x7f800000}.i)
 
 //These are all the aliased internal functions which we can nicely wrap later.
 //Some of these will have x64 asm versions in the future, which you can toggle
 //  with a #define.
 extern "C"{
-    float c_ceilf(float);
-    float c_copysignf(float, float);
-    float c_fabsf(float);
-    float c_floorf(float);
-    float c_fmaf(float, float, float);
-    float c_fmaxf(float, float);
-    float c_fminf(float, float);
-    float c_frexpf(float, int*);
-    int c_ilogbf(float);
-    float c_ldexpf(float, int);
-    float c_modff(float, float*);
-    float c_scalbnf(float, int);
-    float c_inff();
-    float c_ninff(bool);
-    bool c_is_inff(float);
-    bool c_is_ninff(float);
-    bool c_is_pinff(float);
-    bool c_is_finitef(float);
-    bool c_is_normalf(float);
-    int c_signbitf(float);
-    int c_fpclassifyf(float);
-    bool c_is_nanf(float);
-    bool c_is_qnanf(float);
-    bool c_is_snanf(float);
-    float c_nextafterf(float, float);
-    float c_rintf(float);
-    float c_roundf(float);
-    float c_nanf(const char*, bool);
-    float c_sqrtf(float);
-    float c_truncf(float);
+   float c_cbrtf(float);
+   float c_ceilf(float);
+   float c_copysignf(float, float);
+   float c_fabsf(float);
+   float c_floorf(float);
+   float c_fmaf(float, float, float);
+   float c_fmaxf(float, float);
+   float c_fminf(float, float);
+   float c_frexpf(float, int*);
+   int c_ilogbf(float);
+   float c_ldexpf(float, int);
+   float c_modff(float, float*);
+   float c_scalbnf(float, int);
+   float c_inff();
+   float c_ninff(bool);
+   bool c_is_inff(float);
+   bool c_is_ninff(float);
+   bool c_is_pinff(float);
+   bool c_is_finitef(float);
+   bool c_is_normalf(float);
+   int c_signbitf(float);
+   int c_fpclassifyf(float);
+   bool c_is_nanf(float);
+   bool c_is_qnanf(float);
+   bool c_is_snanf(float);
+   float c_nextafterf(float, float);
+   float c_rintf(float);
+   float c_roundf(float);
+   float c_nanf(const char*, bool);
+   float c_sqrtf(float);
+   float c_truncf(float);
 }
 
 #ifdef __cplusplus
 namespace hf_math {
+   using ::c_cbrtf;
+
+   ///Return the cube root of _x correctly rounded according to the current rounding mode.
+   ///
+   ///For implementation, see implement/f32/implement/cbrtf.cpp.
+   ///@param _f The number to take the cube root of.
+   inline float cbrt(const float _f)
+      { return c_cbrtf(_f); }
     using ::c_ceilf;
 
     ///Return _x rounded to the nearby integer toward inf.
     ///
-    ///For implementatoin, see implement/f32/implement/ceilf.cpp.
+    ///For implementation, see implement/f32/implement/ceilf.cpp.
     ///@param _f The number to round toward inf.
     inline float ceil(const float _f)
         { return c_ceilf(_f); }

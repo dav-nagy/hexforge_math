@@ -72,7 +72,7 @@ extern "C"
     }
     const float _s = _fx._f; //Store the nicely scaled version for multiplication
     _fx._i = ((0x7f + _e) << 23); //We reuse this union because it is cheap and easy.
-                                  //This is just a power of 2 sith our new exponent inside _fx._f
+                                  //This is just a power of 2 with our new exponent inside _fx._f
     _fx._f *= _s;
     return _fx._f;
 

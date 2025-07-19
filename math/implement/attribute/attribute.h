@@ -19,7 +19,7 @@
     #define _internal \
         __attribute__((visibility("hidden")))
     #define _export //Useless
-#else //For Windows
+#else //For Windows, but who cares about windows...
     #define _internal \
         //This _strong_alias does not account for name mangling. Always wrap it with extern "C".
         __declspec(dllexport)
@@ -34,6 +34,7 @@
 #define _deprecated(since, msg) \
     __attribute__((deprecated("Since " since " — " msg)))
 
-
+#define _always_inline \
+   __attribute__((always_inline))
 
 #endif //ATTRIBUTE_H

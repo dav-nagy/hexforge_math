@@ -24,8 +24,8 @@ extern "C"
     if (_ix._i >= flt_inf_bits || _ix._i == 0)
         return _x;
     if (_ix._f_core._exp == 0) { //Subnormal _x
-        *_exp -= 25; //Scale down exponent because algebra
-        _ix._f *= 0x1p25f; //Scale up _x so it is easier to work with
+        *_exp -= 23; //Scale down exponent because algebra
+        _ix._f *= 0x1p23f; //Scale up _x so it is easier to work with
     }
     *_exp += _ix._f_core._exp - 126; //Generally the mantissa is between 1 and 2.
                                      //Right now we need it to be between 0.5 and 1,

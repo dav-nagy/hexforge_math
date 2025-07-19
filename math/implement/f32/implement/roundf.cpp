@@ -40,7 +40,7 @@ extern "C"
         return _f;
     const unsigned int _sgn = _fx._i & flt_sgn_mask;
     _fx._i &= flt_abs_mask;
-    _fx._f += 0.5f;
+    _fx._f += 0.5f; //Always exact now that integral cases have been ruled out
     _fx._i |= _sgn;
     //|_f +- 0.5f| > 1.0f,
     if (_fx._f_core._exp < flt_exp_bias) {

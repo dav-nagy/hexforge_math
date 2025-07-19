@@ -111,10 +111,15 @@ extern "C"
    _y *= _i._f;
    //Now _y approximates _zz ^ (1/3)
    //We then perform some precise Newton's method.
-   _y2 = _y * _y;
-   float _y2l = c_fmaf(_y, _y, -_y2); //TODO: Replace with dekker multiplication (for speed)
-   //Now _y2 + _y2l = _y^2 exactly.
-   float _y3 = _y2 * _y,
+   _y2 = _y * _y; //Rough estimate for _y2
+   /*
+    * Side note: You could replace the c_fmaf calls with Dekker arithmetic
+    * or some other precision hack, but it will probably break in non-nearest
+    * rounding modes, so this is the safe option that prioritizes acuracy
+    * over speed.
+    */
+   float _y2l = c_fmaf(_y, _y, -_y2);
+   float _y3 = _y2 * _y, //Rough estimate for _y3
          _y3l = c_fmaf(_y, _y2, -_y3) + _y * _y2l;
    //_y3 + _y3l now represents _y^3 with a huge amount of accuracy
    _h = ((_y3 - _zz) + _y3l) * _rr; //Simple Newton iteration

@@ -29,8 +29,8 @@ static constexpr _int64 exp2_55 = 0x80000000000000ull; // (1 << 55) - used for c
 
 extern "C" {
    _internal
-   inline unsigned int _fmaf_clz32(unsigned int _i) {
-      unsigned int _n = 32;
+   inline int _fmaf_clz32(unsigned int _i) {
+      int _n = 32;
       if (_i >= 0x00010000) {
          _i >>= 16;
          _n -= 16;
@@ -51,7 +51,7 @@ extern "C" {
       return _n;
    }
    _internal
-   inline unsigned int _fmaf_clz64(const unsigned _int64 _i) {
+   inline int _fmaf_clz64(const unsigned _int64 _i) {
       const unsigned int _hi = _i >> 32,
                          _lo = _i & 0xffffffff;
       return _hi ? _fmaf_clz32(_hi) : (32 + _fmaf_clz32(_lo));

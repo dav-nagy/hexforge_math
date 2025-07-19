@@ -13,8 +13,9 @@
 extern "C"
     _internal
     float _ieee754_copysignf(const float _x, const float _y) {
-    _ieee754_f32 _fx(_x), _fy(_y);
-    _fx._i = (_fx._i & flt_abs_mask) | (_fy._i & flt_sgn_mask);
+    _ieee754_f32 _fx(_x);
+   const _ieee754_f32 _fy(_y);
+   _fx._i = (_fx._i & flt_abs_mask) | (_fy._i & flt_sgn_mask);
     return _fx._f;
 }
 

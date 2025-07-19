@@ -9,7 +9,7 @@
 /*
  *Assuming little endian with 32 bit ints because frankly
  *I am too lazy not to and the only people who will be using
- *this are me and my friend anyway, who are on 64-bit Windows with g++/clang
+ *this are me and my friend anyway, who are on 64-bit win/linux with g++/clang
  */
 
 extern "C"

@@ -359,7 +359,7 @@ namespace hf_math {
 
     using ::c_sqrtf;
 
-    ///Return the square root of _f.
+    ///Return the square root of _f correctly rounded according to the current rounding mode.
     ///
     ///For implementation, see implement/f32/implement/sqrtf.cpp.
     ///@param _f The value to take the square root of.

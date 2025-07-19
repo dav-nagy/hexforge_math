@@ -33,9 +33,9 @@
  */
 
 #define INTERNAL_CPP
-#include "../internal/scalbnf.h"
-#include "../internal/f32.h"
-#include "../internal/numbers.h"
+#include "../scalbnf.h"
+#include "../f32.h"
+#include "../numbers.h"
 #undef INTERNAL_CPP
 
 #include "../../attribute/attribute.h"

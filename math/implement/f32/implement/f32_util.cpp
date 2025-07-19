@@ -4,10 +4,10 @@
 
 
 #define INTERNAL_CPP
+#include "../f32_util.h"
 #include "../../char/nan_helper.h"
-#include "../internal/f32.h"
-#include "../internal/f32_util.h"
-#include "../internal/numbers.h"
+#include "../f32.h"
+#include "../numbers.h"
 #undef INTERNAL_CPP
 
 #include "../../attribute/attribute.h"

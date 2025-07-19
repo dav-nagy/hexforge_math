@@ -16,9 +16,9 @@
 
 
 #define INTERNAL_CPP
-#include "../internal/floorf.h"
-#include "../internal/f32.h"
-#include "../internal/numbers.h"
+#include "../floorf.h"
+#include "../f32.h"
+#include "../numbers.h"
 #undef INTERNAL_CPP
 
 #include "../../attribute/attribute.h"

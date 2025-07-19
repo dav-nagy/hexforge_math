@@ -4,7 +4,7 @@
 
 #ifndef RADIX_H
 #define RADIX_H
-#include "../../../../io/io.h"
+#include "../../../io/io.h"
 
 /*
  * The following is to verify that the system radix is 2.

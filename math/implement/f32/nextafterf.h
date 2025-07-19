@@ -6,7 +6,7 @@
 //Include guard
 #define NEXTAFTERF_H
 
-#include "../../attribute/attribute.h"
+#include "../attribute/attribute.h"
 
 #if !defined(MATH_INCLUDE) && !defined(INTERNAL_CPP)
         //Stop people from directly including this file unless they Know how...

@@ -4,6 +4,6 @@
 
 #define INTERNAL_CPP
 
-#include "../internal/snan_err.h"
+#include "../snan_err.h"
 
 #define INTERNAL_CPP

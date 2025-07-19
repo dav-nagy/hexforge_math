@@ -3,11 +3,11 @@
 //
 
 #define INTERNAL_CPP
-#include "../internal/fmaxf.h"
+#include "../fmaxf.h"
 
 #include "../../attribute/attribute.h"
-#include "../internal/f32.h"
-#include "../internal/numbers.h"
+#include "../f32.h"
+#include "../numbers.h"
 #undef INTERNAL_CPP
 
 extern "C"

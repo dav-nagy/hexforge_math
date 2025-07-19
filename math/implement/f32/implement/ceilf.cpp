@@ -15,9 +15,9 @@
  */
 
 #define INTERNAL_CPP
-#include "../internal/ceilf.h"
-#include "../internal/f32.h"
-#include "../internal/numbers.h"
+#include "../ceilf.h"
+#include "../f32.h"
+#include "../numbers.h"
 #undef INTERNAL_CPP
 
 #include "../../attribute/attribute.h"

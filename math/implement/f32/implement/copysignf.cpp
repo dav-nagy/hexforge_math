@@ -3,9 +3,9 @@
 //
 
 #define INTERNAL_CPP
-#include "../internal/copysignf.h"
-#include "../internal/f32.h"
-#include "../internal/numbers.h"
+#include "../copysignf.h"
+#include "../f32.h"
+#include "../numbers.h"
 #undef INTERNAL_CPP
 
 #include "../../attribute/attribute.h"

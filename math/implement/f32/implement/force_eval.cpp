@@ -3,5 +3,5 @@
 //
 
 #define INTERNAL_CPP
-#include "../internal/force_eval.h"
+#include "../force_eval.h"
 #undef INTERNAL_CPP

@@ -13,7 +13,7 @@
 #define C_MATH_INCLUDE
 
 //Radix error that will likely be removed in the GitHub release
-#include "implement/f32/internal/radix.h"
+#include "implement/f32/radix.h"
 
 /*
  * These values are the same as the ones in glibc's <cmath> / <math.h> because it is already standard.

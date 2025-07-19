@@ -3,12 +3,12 @@
 //
 
 #define INTERNAL_CPP
-#include "../internal/fmaf.h"
+#include "../fmaf.h"
 #include "../../attribute/attribute.h"
 #include "../../round_mode.h"
-#include "../internal/f32.h"
-#include "../internal/force_eval.h"
-#include "../internal/numbers.h"
+#include "../f32.h"
+#include "../force_eval.h"
+#include "../numbers.h"
 #undef INTERNAL_CPP
 
 /*

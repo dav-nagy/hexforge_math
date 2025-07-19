@@ -32,9 +32,9 @@
  */
 
 #define INTERNAL_CPP
-#include "../internal/modff.h"
-#include "../internal/f32.h"
-#include "../internal/numbers.h"
+#include "../modff.h"
+#include "../f32.h"
+#include "../numbers.h"
 #undef INTERNAL_CPP
 
 #include "../../attribute/attribute.h"

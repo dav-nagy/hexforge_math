@@ -4,9 +4,9 @@
 
 
 #define INTERNAL_CPP
-#include "../internal/frexpf.h"
-#include "../internal/f32.h"
-#include "../internal/numbers.h"
+#include "../frexpf.h"
+#include "../f32.h"
+#include "../numbers.h"
 #undef INTERNAL_CPP
 
 #include "../../attribute/attribute.h"

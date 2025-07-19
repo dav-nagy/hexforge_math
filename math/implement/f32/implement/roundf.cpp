@@ -24,9 +24,9 @@
  */
 
 #define INTERNAL_CPP
-#include "../internal/roundf.h"
-#include "../internal/f32.h"
-#include "../internal/numbers.h"
+#include "../roundf.h"
+#include "../f32.h"
+#include "../numbers.h"
 #undef INTERNAL_CPP
 
 #include "../../attribute/attribute.h"

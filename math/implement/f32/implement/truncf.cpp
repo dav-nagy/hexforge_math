@@ -2,9 +2,9 @@
 // Created by David on 6/1/2025.
 
 #define INTERNAL_CPP
-#include "../internal/truncf.h"//These file have checks for INTERNAL_CPP, so we wrap these #includes in said macro
-#include "../internal/f32.h"//...
-#include "../internal/numbers.h"
+#include "../truncf.h"
+#include "../f32.h"
+#include "../numbers.h"
 #undef INTERNAL_CPP
 
 #include "../../attribute/attribute.h"

@@ -7,8 +7,8 @@
  */
 
 #define INTERNAL_CPP
-#include "../internal/ldexpf.h"
-#include "../internal/scalbnf.h"
+#include "../ldexpf.h"
+#include "../scalbnf.h"
 #undef INTERNAL_CPP
 
 #include "../../attribute/attribute.h"

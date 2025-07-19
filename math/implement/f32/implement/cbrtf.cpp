@@ -3,12 +3,12 @@
 //
 
 #define INTERNAL_CPP
-#include "../internal/cbrtf.h"
+#include "../cbrtf.h"
 #include "../../attribute/attribute.h"
 #include "../../round_mode.h"
-#include "../internal/f32.h"
-#include "../internal/fmaf.h"
-#include "../internal/numbers.h"
+#include "../f32.h"
+#include "../fmaf.h"
+#include "../numbers.h"
 #undef INTERNAL_CPP
 
 /* CORRECTLY ROUNDED CUBIC ROOT EVALUATION IN DOUBLE

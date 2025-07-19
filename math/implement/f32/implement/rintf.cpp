@@ -25,9 +25,9 @@
     */
 
    #define INTERNAL_CPP
-   #include "../internal/rintf.h"
-   #include "../internal/f32.h"
-   #undef INTERNAL_CPP
+   #include "../rintf.h"
+#include "../f32.h"
+#undef INTERNAL_CPP
 
    #include "../../attribute/attribute.h"
 

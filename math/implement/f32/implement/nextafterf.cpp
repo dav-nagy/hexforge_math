@@ -3,10 +3,10 @@
 //
 
 #define INTERNAL_CPP
-#include "../internal/nextafterf.h"
-#include "../internal/f32.h"
+#include "../nextafterf.h"
 #include "../../attribute/attribute.h"
-#include "../internal/numbers.h"
+#include "../f32.h"
+#include "../numbers.h"
 #undef INTERNAL_CPP
 
 extern "C"

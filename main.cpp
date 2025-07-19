@@ -13,8 +13,8 @@
 
 
 #include "math/c_math.h"
-#include "math/implement/f32/internal/f32.h"
-#include "math/implement/f32/internal/numbers.h"
+#include "math/implement/f32/f32.h"
+#include "math/implement/f32/numbers.h"
 #include "math/implement/round_mode.h"
 #undef MATH_INCLUDE
 
